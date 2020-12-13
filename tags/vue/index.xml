@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vue on Observer的小家</title>
+    <link>https://observerzq.github.io/ObzerverZQ.github.io/tags/vue/</link>
+    <description>Recent content in vue on Observer的小家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 13 Dec 2020 19:23:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/tags/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue Router 4.0特性简介</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/</link>
+      <pubDate>Sun, 13 Dec 2020 19:23:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/</guid>
+      <description>项目结构优化 Vue Router 现在分为三个模块：
+ History 实现： 处理地址栏，并且特定于 Vue Router 运行的环境（节点，浏览器，移动设备等） Router 匹配器：处理类似 /users/:id 的路由解析和优先级处理。 Router: 将一切连接在一起，并处理路由特定功能，例如导航守卫。  动态路由 Vue Router3 { // 会匹配所有路径 path: &#39;*&#39; } { // 会匹配以 `/user-` 开头的任意路径 path: &#39;/user-*&#39; } 当使用通配符路由时，请确保路由的顺序是正确的，也就是说含有通配符的路由应该放在最后。路由 { path: &amp;lsquo;*&amp;rsquo; } 通常用于客户端 404 错误。如果你使用了History 模式，请确保正确配置你的服务器。 有时候，同一个路径可以匹配多个路由，此时，匹配的优先级就按照路由的定义顺序：谁先定义的，谁的优先级就最高。
+vue-router 使用 path-to-regexp 作为路径匹配引擎，所以支持很多高级的匹配模式，例如：可选的动态路径参数、匹配零个或多个、一个或多个，甚至是自定义正则匹配。查看它的文档学习高阶的路径匹配，还有这个例子 展示 vue-router 怎么使用这类匹配。
+Vue Router4 不再使用path-to-regexp，而是使用自己的转化系统。新增了有自动优先级排名的高级路径解析功能，用户新现在可以以随意的顺序定义路由，因为 Router 会根据 URL 字符串表示来猜测应该匹配的路由。 举个例子来说，你同时写了 /users 和 /:w+ 这两个路由：
+const routes = [ { path: &amp;#39;/users&amp;#39;, Component: Users }, { path: &amp;#39;/:w+&amp;#39;, Component: NotFound } ] 那么你当然希望在输入 /users 这个更精确的路径的时候，走上面的规则，而下面则作为兜底规则。在旧版的 Vue Router 中需要通过路由声明的顺序来保证这个行为，而新版则无论你怎样放置，都会按照得分系统来计算该匹配哪个路由。</description>
+    </item>
+    
+  </channel>
+</rss>

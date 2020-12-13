@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='本文主要介绍vue-router4.0与vue-router3的对比以及新特性'><title>Vue Router 4.0特性简介</title>
+
+<link rel='canonical' href='https://observerzq.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/'>
+
+<link rel="stylesheet" href="/ObzerverZQ.github.io/scss/style.min.css"><meta property='og:title' content='Vue Router 4.0特性简介'>
+<meta property='og:description' content='本文主要介绍vue-router4.0与vue-router3的对比以及新特性'>
+<meta property='og:url' content='https://observerzq.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/'>
+<meta property='og:site_name' content='Observer的小家'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='vue-router' /><meta property='article:tag' content='vue' /><meta property='article:published_time' content='2020-12-13T19:23:26&#43;08:00'/><meta property='article:modified_time' content='2020-12-13T19:23:26&#43;08:00'/><meta property='og:image' content='https://observerzq.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/cover.jpg' />
+<meta name="twitter:title" content="Vue Router 4.0特性简介">
+<meta name="twitter:description" content="本文主要介绍vue-router4.0与vue-router3的对比以及新特性"><meta name="twitter:card" content="">
+	<meta name="twitter:image" content='https://observerzq.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/cover.jpg' />
+    </head>
+    <body class="">
+        <div class="container flex on-phone--column align-items--flex-start extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/ObzerverZQ.github.io/img/avatar_hud6d463d18b589d5e03672515222d6d83_864729_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://observerzq.github.io/ObzerverZQ.github.io/">Observer的小家</a></h1>
+        <h2 class="site-description">一个前端小白.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/ObzerverZQ.github.io/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/ObzerverZQ.github.io/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/ObzerverZQ.github.io/post'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Posts</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/ObzerverZQ.github.io/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/ObzerverZQ.github.io/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://observerzq.github.io/ObzerverZQ.github.io/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <img srcset="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/cover_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_1024x0_resize_q75_box.jpg 1024w, /ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/cover_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_2000x0_resize_q75_box.jpg 2000w"
+                    src="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/cover_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_2000x0_resize_q75_box.jpg" width="1000" height="667" loading="lazy"
+                    alt="Featured image of post Vue Router 4.0特性简介" />
+            
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/ObzerverZQ.github.io/categories/vue/" 
+                    class="color-tag"
+                    data-image="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/cover_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_20x20_fill_q75_box_smart1.jpg" 
+                    data-key="" 
+                    data-hash="md5-rC&#43;UhC7sa7h6Y66uIugvQQ==">
+                    Vue
+                </a>
+            
+        
+            <a href="/ObzerverZQ.github.io/categories/%E5%89%8D%E7%AB%AF/" 
+                    class="color-tag"
+                    data-image="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/cover_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_20x20_fill_q75_box_smart1.jpg" 
+                    data-key="" 
+                    data-hash="md5-rC&#43;UhC7sa7h6Y66uIugvQQ==">
+                    前端
+                </a>
+            
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/">Vue Router 4.0特性简介</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        本文主要介绍vue-router4.0与vue-router3的对比以及新特性
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Dec 13, 2020</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <h2 id="项目结构优化">项目结构优化</h2>
+<p>Vue Router 现在分为三个模块：</p>
+<ul>
+<li>History 实现： 处理地址栏，并且特定于 Vue Router 运行的环境（节点，浏览器，移动设备等）</li>
+<li>Router 匹配器：处理类似 /users/:id 的路由解析和优先级处理。</li>
+<li>Router: 将一切连接在一起，并处理路由特定功能，例如导航守卫。</li>
+</ul>
+<h2 id="动态路由">动态路由</h2>
+<h3 id="vue-router3">Vue Router3</h3>
+<pre><code>{
+  // 会匹配所有路径
+  path: '*'
+}
+{
+  // 会匹配以 `/user-` 开头的任意路径
+  path: '/user-*'
+}
+</code></pre><p>当使用通配符路由时，请确保路由的顺序是正确的，也就是说含有通配符的路由应该放在最后。路由 { path: &lsquo;*&rsquo; } 通常用于客户端 404 错误。如果你使用了History 模式，请确保正确配置你的服务器。
+有时候，同一个路径可以匹配多个路由，此时，匹配的优先级就按照路由的定义顺序：谁先定义的，谁的优先级就最高。</p>
+<p>vue-router 使用 <a class="link" href="https://github.com/pillarjs/path-to-regexp/tree/v1.7.0"  target="_blank" rel="noopener"
+    >path-to-regexp</a> 作为路径匹配引擎，所以支持很多高级的匹配模式，例如：可选的动态路径参数、匹配零个或多个、一个或多个，甚至是自定义正则匹配。查看它的文档学习高阶的路径匹配，还有这个例子 展示 vue-router 怎么使用这类匹配。</p>
+<h3 id="vue-router4">Vue Router4</h3>
+<p>不再使用path-to-regexp，而是使用自己的转化系统。新增了有自动优先级排名的高级路径解析功能，用户新现在可以以随意的顺序定义路由，因为 Router 会根据 URL 字符串表示来猜测应该匹配的路由。
+举个例子来说，你同时写了 /users 和 /:w+ 这两个路由：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/users&#39;</span><span class="p">,</span>
+    <span class="nx">Component</span><span class="o">:</span> <span class="nx">Users</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/:w+&#39;</span><span class="p">,</span>
+    <span class="nx">Component</span><span class="o">:</span> <span class="nx">NotFound</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div><p>那么你当然希望在输入 /users 这个更精确的路径的时候，走上面的规则，而下面则作为兜底规则。在旧版的 Vue Router 中需要通过路由声明的顺序来保证这个行为，而新版则无论你怎样放置，都会按照得分系统来计算该匹配哪个路由。</p>
+<p>甚至专门有 <a class="link" href="https://paths.esm.dev/?p=AAMeJSyAwR4UbFDAFxAcAGAIJXMAAA..#"  target="_blank" rel="noopener"
+    >Path Ranker</a>这个网页来帮助你计算路由的优先级得分。
+简单来说，越明确的路由排名越高，越模糊则反之，无关顺序，非常有意思。</p>
+<h2 id="改进后的导航系统">改进后的导航系统</h2>
+<p>新的导航系统更加具有一致性，它改善了滚动行为的体验，使其更加接近原生浏览器的行为。 它还为用户提供了有关导航状态的几乎更多信息，用户可以用这些信息，通过 ProgressBar和 Modal之类的全局 UI 元素让用户的体验变得更好。</p>
+<h2 id="更强大的-devtools">更强大的 Devtools</h2>
+<p>多亏了新的Vue Devtools[4]，Vue Router 能够和浏览器进行以下更高级的整合。</p>
+<ol>
+<li>时间轴记录路由变化：
+<figure>
+		<a href="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640.png" data-size="776x708">
+			<img srcset="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_hua8abcd3874835e9fe576584727ada990_32711_480x0_resize_box_2.png 480w, /ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_hua8abcd3874835e9fe576584727ada990_32711_1024x0_resize_box_2.png 1024w"
+				src="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640.png" width="776" height="708" loading="lazy"
+				alt="Timeline">
+		</a>
+		
+		<figcaption>Timeline</figcaption>
+		
+	</figure></li>
+<li>完整 route 目录，能够帮助你轻松进行调试：
+<figure>
+		<a href="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1.png" data-size="776x303">
+			<img srcset="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1_huec98436c9748617bf189c5804862eda7_20931_480x0_resize_box_2.png 480w, /ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1_huec98436c9748617bf189c5804862eda7_20931_1024x0_resize_box_2.png 1024w"
+				src="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1.png" width="776" height="303" loading="lazy"
+				alt="Routes directory">
+		</a>
+		
+		<figcaption>Routes directory</figcaption>
+		
+	</figure></li>
+</ol>
+<h2 id="更好的路由守卫">更好的路由守卫</h2>
+<h3 id="vue-router3-1">Vue router3:</h3>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="c1">// BAD
+</span><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">((</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">name</span> <span class="o">!==</span> <span class="s1">&#39;Login&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isAuthenticated</span><span class="p">)</span> <span class="nx">next</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Login&#39;</span> <span class="p">})</span>
+  <span class="c1">// 如果用户未能验证身份，则 `next` 会被调用两次
+</span><span class="c1"></span>  <span class="nx">next</span><span class="p">()</span>
+<span class="p">})</span>
+<span class="c1">// GOOD
+</span><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">((</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">name</span> <span class="o">!==</span> <span class="s1">&#39;Login&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isAuthenticated</span><span class="p">)</span> <span class="nx">next</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Login&#39;</span> <span class="p">})</span>
+  <span class="k">else</span> <span class="nx">next</span><span class="p">()</span>
+<span class="p">})</span>
+</code></pre></div><p><strong>确保 next 函数在任何给定的导航守卫中都被严格调用一次。它可以出现多于一次，但是只能在所有的逻辑路径都不重叠的情况下，否则钩子永远都不会被解析或报错。</strong></p>
+<h3 id="vue-router-4">Vue Router 4</h3>
+<p>和next说拜拜，现在确认跳转不需要再手动执行这个函数了，而是根据你的返回值来决定行为。同样支持异步返回 Promise。</p>
+<p>现在的路由守卫 API 更加友好且合理了，可以完美利用 async await 做异步处理，比如这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">router</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="kr">async</span> <span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="c1">// canUserAccess() returns `true` or `false`
+</span><span class="c1"></span>  <span class="k">return</span> <span class="kr">await</span> <span class="nx">canUserAccess</span><span class="p">(</span><span class="nx">to</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div><h2 id="一致的编码">一致的编码</h2>
+<p>编码方式（Encoding）做了统一的适配，现在将在不同的浏览器和路由位置属性（params, query 和 hash）中保持一致。router.push是幂等的impodent，及作为参数传递给 router.push() 时，不需要做任何编码，在你使用 $route 或 useRoute()去拿到参数的时候永远是解码（Decoded）的状态。</p>
+<h2 id="迁移成本低">迁移成本低</h2>
+<p>Vue Router 4 主要致力于于在改善现有 Router 的同时保持非常相似的 API，如果你已经很上手旧版的 Vue Router 了，那你的迁移会做的很顺利，可以查看文档中的完整迁移指南[5]。</p>
+<h2 id="展望未来">展望未来</h2>
+<p>在过去的几个月中，Vue Router 一直稳定而且好用，现在它可以做些更好玩的事儿了：</p>
+<ul>
+<li>使用现有工具（Vetur，Vite，Devtools 等）得到更好的开发体验。</li>
+<li>与 Suspense 等现代功能更好地集成。</li>
+<li>RFCs 和社区共同探讨出更好用的 API。</li>
+<li>开发更轻型的版本。</li>
+</ul>
+<h3 id="removed--star-or-catch-all-routes">Removed * (star or catch all) routes</h3>
+<p>Catch all routes (<em>, /</em>) must now be defined using a parameter with a custom regex:</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="c1">// pathMatch is the name of the param, e.g., going to /not/found yields
+</span><span class="c1"></span>  <span class="c1">// { params: { pathMatch: [&#39;not&#39;, &#39;found&#39;] }}
+</span><span class="c1"></span>  <span class="c1">// this is thanks to the last *, meaning repeated params and it is necessary if you
+</span><span class="c1"></span>  <span class="c1">// plan on directly navigating to the not-found route using its name
+</span><span class="c1"></span>  <span class="p">{</span> <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/:pathMatch(.*)*&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;not-found&#39;</span><span class="p">,</span> <span class="nx">component</span><span class="o">:</span> <span class="nx">NotFound</span> <span class="p">},</span>
+  <span class="c1">// if you omit the last `*`, the `/` character in params will be encoded when resolving or pushing
+</span><span class="c1"></span>  <span class="p">{</span> <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/:pathMatch(.*)&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;bad-not-found&#39;</span><span class="p">,</span> <span class="nx">component</span><span class="o">:</span> <span class="nx">NotFound</span> <span class="p">},</span>
+<span class="p">]</span>
+<span class="c1">// bad example if using named routes:
+</span><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">resolve</span><span class="p">({</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;bad-not-found&#39;</span><span class="p">,</span>
+  <span class="nx">params</span><span class="o">:</span> <span class="p">{</span> <span class="nx">pathMatch</span><span class="o">:</span> <span class="s1">&#39;not/found&#39;</span> <span class="p">},</span>
+<span class="p">}).</span><span class="nx">href</span> <span class="c1">// &#39;/not%2Ffound&#39;
+</span><span class="c1">// good example:
+</span><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">resolve</span><span class="p">({</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;not-found&#39;</span><span class="p">,</span>
+  <span class="nx">params</span><span class="o">:</span> <span class="p">{</span> <span class="nx">pathMatch</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;found&#39;</span><span class="p">]</span> <span class="p">},</span>
+<span class="p">}).</span><span class="nx">href</span> <span class="c1">// &#39;/not/found&#39;
+</span></code></pre></div><h3 id="missing-required-params-on-named-routes">Missing required params on named routes</h3>
+<p>Pushing or resolving a named route without its required params will throw an error:</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="c1">// given the following route:
+</span><span class="c1"></span><span class="kr">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[{</span> <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/users/:id&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nx">component</span><span class="o">:</span> <span class="nx">UserDetails</span> <span class="p">}]</span>
+
+<span class="c1">// Missing the `id` param will fail
+</span><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span> <span class="p">})</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">resolve</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span> <span class="p">})</span>
+</code></pre></div><p>参考资料：<br>
+<a class="link" href="https://github.com/vuejs/vue-router-next/releases/tag/v4.0.0"  target="_blank" rel="noopener"
+    >Vue Router 4.0 release log</a><br>
+<a class="link" href="https://mp.weixin.qq.com/s/mBd5ErYcSXnOl7Ib9iwx5Q"  target="_blank" rel="noopener"
+    >Vue Router 4.0 正式发布！焕然一新。</a><br>
+<a class="link" href="https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#%E6%8D%95%E8%8E%B7%E6%89%80%E6%9C%89%E8%B7%AF%E7%94%B1%E6%88%96-404-not-found-%E8%B7%AF%E7%94%B1"  target="_blank" rel="noopener"
+    >Vue Router 3.0 文档</a><br>
+<a class="link" href="https://next.router.vuejs.org/"  target="_blank" rel="noopener"
+    >Vue Router 4.0 doc</a><br>
+<a class="link" href="https://next.router.vuejs.org/guide/migration/index.html#breaking-changes"  target="_blank" rel="noopener"
+    >Vue Router 3 - 4 migration</a><br>
+<a class="link" href="https://next.router.vuejs.org/guide/advanced/dynamic-routing.html"  target="_blank" rel="noopener"
+    >Vue Router4 dynamic routing</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/ObzerverZQ.github.io/tags/vue-router/">vue-router</a>
+        
+            <a href="/ObzerverZQ.github.io/tags/vue/">vue</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">&copy; 2020 Observer的小家</section>
+    <section class="powerby">Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="1.1.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true" style="display:none">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+            </main>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"
+    integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin="anonymous"></script><script type="text/javascript" src="/ObzerverZQ.github.io/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<link rel="stylesheet" href="/ObzerverZQ.github.io/css/highlight/light.min.css" media="(prefers-color-scheme: light)">
+<link rel="stylesheet" href="/ObzerverZQ.github.io/css/highlight/dark.min.css" media="(prefers-color-scheme: dark)">
+
+    </body>
+</html>
