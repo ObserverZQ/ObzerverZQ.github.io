@@ -255,7 +255,8 @@
 <h2 id="改进后的导航系统">改进后的导航系统</h2>
 <p>新的导航系统更加具有一致性，它改善了滚动行为的体验，使其更加接近原生浏览器的行为。 它还为用户提供了有关导航状态的几乎更多信息，用户可以用这些信息，通过 ProgressBar和 Modal之类的全局 UI 元素让用户的体验变得更好。</p>
 <h2 id="更强大的-devtools">更强大的 Devtools</h2>
-<p>多亏了新的Vue Devtools[4]，Vue Router 能够和浏览器进行以下更高级的整合。</p>
+<p>多亏了新的<a class="link" href="https://chrome.google.com/webstore/detail/vuejs-devtools/ljjemllljcmogpfapbkkighbhhppjdbg"  target="_blank" rel="noopener"
+    >Vue Devtools</a>，Vue Router 能够和浏览器进行以下更高级的整合。</p>
 <ol>
 <li>时间轴记录路由变化：
 <figure>
@@ -281,7 +282,7 @@
 	</figure></li>
 </ol>
 <h2 id="更好的路由守卫">更好的路由守卫</h2>
-<h3 id="vue-router3-1">Vue router3:</h3>
+<h3 id="beforeeach">beforeEach</h3>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="c1">// BAD
 </span><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">((</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">name</span> <span class="o">!==</span> <span class="s1">&#39;Login&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isAuthenticated</span><span class="p">)</span> <span class="nx">next</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Login&#39;</span> <span class="p">})</span>
@@ -293,14 +294,48 @@
   <span class="k">if</span> <span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">name</span> <span class="o">!==</span> <span class="s1">&#39;Login&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isAuthenticated</span><span class="p">)</span> <span class="nx">next</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Login&#39;</span> <span class="p">})</span>
   <span class="k">else</span> <span class="nx">next</span><span class="p">()</span>
 <span class="p">})</span>
-</code></pre></div><p><strong>确保 next 函数在任何给定的导航守卫中都被严格调用一次。它可以出现多于一次，但是只能在所有的逻辑路径都不重叠的情况下，否则钩子永远都不会被解析或报错。</strong></p>
-<h3 id="vue-router-4">Vue Router 4</h3>
-<p>和next说拜拜，现在确认跳转不需要再手动执行这个函数了，而是根据你的返回值来决定行为。同样支持异步返回 Promise。</p>
+</code></pre></div><p><strong>确保 next 函数在任何给定的导航守卫中都被严格调用一次。它可以出现多于一次，但是只能在所有的逻辑路径都不重叠的情况下，否则钩子永远都不会被解析或报错。</strong>
+和next说拜拜，现在确认跳转不需要再手动执行这个函数了，而是根据你的返回值来决定行为。同样支持异步返回 Promise。</p>
 <p>现在的路由守卫 API 更加友好且合理了，可以完美利用 async await 做异步处理，比如这样：</p>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">router</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="kr">async</span> <span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
   <span class="c1">// canUserAccess() returns `true` or `false`
 </span><span class="c1"></span>  <span class="k">return</span> <span class="kr">await</span> <span class="nx">canUserAccess</span><span class="p">(</span><span class="nx">to</span><span class="p">)</span>
 <span class="p">})</span>
+</code></pre></div><h3 id="路由独享的守卫">路由独享的守卫</h3>
+<p>现在beforeEnter支持传入函数数组，便于复用，例如跳转到某个路由后自动去除所有query和hash</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="c1">// vue-router 3
+</span><span class="c1"></span><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+  <span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/foo&#39;</span><span class="p">,</span>
+      <span class="nx">component</span><span class="o">:</span> <span class="nx">Foo</span><span class="p">,</span>
+      <span class="nx">beforeEnter</span><span class="o">:</span> <span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// ...
+</span><span class="c1"></span>      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">})</span>
+<span class="c1">// vue-router 4
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">removeQueryParams</span><span class="p">(</span><span class="nx">to</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">query</span><span class="p">).</span><span class="nx">length</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="nx">path</span><span class="o">:</span> <span class="nx">to</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span> <span class="nx">query</span><span class="o">:</span> <span class="p">{},</span> <span class="nx">hash</span><span class="o">:</span> <span class="nx">to</span><span class="p">.</span><span class="nx">hash</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">removeHash</span><span class="p">(</span><span class="nx">to</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">hash</span><span class="p">)</span> <span class="k">return</span> <span class="p">{</span> <span class="nx">path</span><span class="o">:</span> <span class="nx">to</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span> <span class="nx">query</span><span class="o">:</span> <span class="nx">to</span><span class="p">.</span><span class="nx">query</span><span class="p">,</span> <span class="nx">hash</span><span class="o">:</span> <span class="s1">&#39;&#39;</span> <span class="p">}</span>
+<span class="p">}</span>
+<span class="kr">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/users/:id&#39;</span><span class="p">,</span>
+    <span class="nx">component</span><span class="o">:</span> <span class="nx">UserDetails</span><span class="p">,</span>
+    <span class="nx">beforeEnter</span><span class="o">:</span> <span class="p">[</span><span class="nx">removeQueryParams</span><span class="p">,</span> <span class="nx">removeHash</span><span class="p">],</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/about&#39;</span><span class="p">,</span>
+    <span class="nx">component</span><span class="o">:</span> <span class="nx">UserDetails</span><span class="p">,</span>
+    <span class="nx">beforeEnter</span><span class="o">:</span> <span class="p">[</span><span class="nx">removeQueryParams</span><span class="p">],</span>
+  <span class="p">},</span>
+<span class="p">]</span>
 </code></pre></div><h2 id="一致的编码">一致的编码</h2>
 <p>编码方式（Encoding）做了统一的适配，现在将在不同的浏览器和路由位置属性（params, query 和 hash）中保持一致。router.push是幂等的impodent，及作为参数传递给 router.push() 时，不需要做任何编码，在你使用 $route 或 useRoute()去拿到参数的时候永远是解码（Decoded）的状态。</p>
 <h2 id="迁移成本低">迁移成本低</h2>
@@ -313,6 +348,7 @@
 <li>RFCs 和社区共同探讨出更好用的 API。</li>
 <li>开发更轻型的版本。</li>
 </ul>
+<h2 id="breaking-changespartial">Breaking Changes(partial)</h2>
 <h3 id="removed--star-or-catch-all-routes">Removed * (star or catch all) routes</h3>
 <p>Catch all routes (<em>, /</em>) must now be defined using a parameter with a custom regex:</p>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
@@ -342,7 +378,9 @@
 <span class="c1">// Missing the `id` param will fail
 </span><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span> <span class="p">})</span>
 <span class="nx">router</span><span class="p">.</span><span class="nx">resolve</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span> <span class="p">})</span>
-</code></pre></div><p>参考资料：<br>
+</code></pre></div><h2 id="匹配语法">匹配语法</h2>
+<p>todo</p>
+<p>参考资料：<br>
 <a class="link" href="https://github.com/vuejs/vue-router-next/releases/tag/v4.0.0"  target="_blank" rel="noopener"
     >Vue Router 4.0 release log</a><br>
 <a class="link" href="https://mp.weixin.qq.com/s/mBd5ErYcSXnOl7Ib9iwx5Q"  target="_blank" rel="noopener"
@@ -354,7 +392,9 @@
 <a class="link" href="https://next.router.vuejs.org/guide/migration/index.html#breaking-changes"  target="_blank" rel="noopener"
     >Vue Router 3 - 4 migration</a><br>
 <a class="link" href="https://next.router.vuejs.org/guide/advanced/dynamic-routing.html"  target="_blank" rel="noopener"
-    >Vue Router4 dynamic routing</a></p>
+    >Vue Router4 dynamic routing</a><br>
+<a class="link" href="https://next.router.vuejs.org/guide/essentials/route-matching-syntax.html"  target="_blank" rel="noopener"
+    >Routes' Matching Syntax</a></p>
 
 </section>
 
