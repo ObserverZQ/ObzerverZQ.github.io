@@ -253,16 +253,53 @@
     >Path Ranker</a>这个网页来帮助你计算路由的优先级得分。
 简单来说，越明确的路由排名越高，越模糊则反之，无关顺序，非常有意思。</p>
 <h2 id="改进后的导航系统">改进后的导航系统</h2>
-<p>新的导航系统更加具有一致性，它改善了滚动行为的体验，使其更加接近原生浏览器的行为。 它还为用户提供了有关导航状态的几乎更多信息，用户可以用这些信息，通过 ProgressBar和 Modal之类的全局 UI 元素让用户的体验变得更好。</p>
-<h2 id="更强大的-devtools">更强大的 Devtools</h2>
+<p>新的导航系统更加具有一致性，它改善了滚动行为的体验，使其更加接近原生浏览器的行为。 它还为用户提供了有关导航状态的几乎更多信息，用户可以用这些信息，通过 ProgressBar和 Modal之类的全局 UI 元素让用户的体验变得更好。
+改进动机：</p>
+<ol>
+<li>先前的selector默认使用document.querySelector。但是这个API不支持 /^#\d/即以数字开头的id元素，所以vue3团队决定针对这种参数使用getElementById。但是这个API仍不适用于选择某个id元素内的某个class的元素，比如#1one .container。诸如此类的情况都会导致vue-router抛出document.querySelector failed，让用户产生困惑。</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="p">{</span> <span class="nx">x</span><span class="o">:</span> <span class="nx">number</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="nx">number</span> <span class="p">}</span>
+<span class="p">{</span> <span class="nx">selector</span><span class="o">:</span> <span class="nx">string</span><span class="p">,</span> <span class="nx">offset</span><span class="o">?</span> <span class="o">:</span> <span class="p">{</span> <span class="nx">x</span><span class="o">:</span> <span class="nx">number</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="nx">number</span> <span class="p">}}</span>
+</code></pre></div><ol start="2">
+<li>基于Element.scrollTo的参数配置ScrollToOptions，vue-router 4进行了改造</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="c1">// vue router 3
+</span><span class="c1"></span><span class="nx">scrollBehavior</span> <span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">savedPosition</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">hash</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">selector</span><span class="o">:</span> <span class="nx">to</span><span class="p">.</span><span class="nx">hash</span>
+    <span class="p">}</span>
+    <span class="c1">// return { x: 0, y: 200 }
+</span><span class="c1"></span>  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// native JS
+</span><span class="c1"></span><span class="nx">element</span><span class="p">.</span><span class="nx">scrollTo</span><span class="p">({</span>
+  <span class="nx">top</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+  <span class="nx">left</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+  <span class="nx">behavior</span><span class="o">:</span> <span class="s1">&#39;smooth&#39;</span>
+<span class="p">});</span>
+<span class="c1">// vue router 4
+</span><span class="c1"></span><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Router</span><span class="p">({</span>
+  <span class="nx">scrollBehavior</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">savedPosition</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// scroll to id `can~contain-special&gt;characters` + 200px
+</span><span class="c1"></span>    <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#can~contain-special&gt;characters&#39;</span>
+      <span class="c1">// top relative offset
+</span><span class="c1"></span>      <span class="nx">top</span><span class="o">:</span> <span class="mi">200</span>
+      <span class="c1">// instead of `offset: { y: 200 }`
+</span><span class="c1"></span>    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div><h2 id="更强大的-devtools">更强大的 Devtools</h2>
 <p>多亏了新的<a class="link" href="https://chrome.google.com/webstore/detail/vuejs-devtools/ljjemllljcmogpfapbkkighbhhppjdbg"  target="_blank" rel="noopener"
     >Vue Devtools</a>，Vue Router 能够和浏览器进行以下更高级的整合。</p>
 <ol>
 <li>时间轴记录路由变化：
 <figure>
-		<a href="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640.png" data-size="776x708">
-			<img srcset="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_hua8abcd3874835e9fe576584727ada990_32711_480x0_resize_box_2.png 480w, /ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_hua8abcd3874835e9fe576584727ada990_32711_1024x0_resize_box_2.png 1024w"
-				src="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640.png" width="776" height="708" loading="lazy"
+		<a href="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/timeline.png" data-size="1526x976">
+			<img srcset="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/timeline_hu257b98612f48b583255f4044da167bb6_189352_480x0_resize_box_2.png 480w, /ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/timeline_hu257b98612f48b583255f4044da167bb6_189352_1024x0_resize_box_2.png 1024w"
+				src="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/timeline.png" width="1526" height="976" loading="lazy"
 				alt="Timeline">
 		</a>
 		
@@ -271,9 +308,9 @@
 	</figure></li>
 <li>完整 route 目录，能够帮助你轻松进行调试：
 <figure>
-		<a href="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1.png" data-size="776x303">
-			<img srcset="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1_huec98436c9748617bf189c5804862eda7_20931_480x0_resize_box_2.png 480w, /ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1_huec98436c9748617bf189c5804862eda7_20931_1024x0_resize_box_2.png 1024w"
-				src="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1.png" width="776" height="303" loading="lazy"
+		<a href="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/routes.png" data-size="1622x696">
+			<img srcset="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/routes_hu52b1c29700ec304ea01d5e7e1d368a3b_186141_480x0_resize_box_2.png 480w, /ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/routes_hu52b1c29700ec304ea01d5e7e1d368a3b_186141_1024x0_resize_box_2.png 1024w"
+				src="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/routes.png" width="1622" height="696" loading="lazy"
 				alt="Routes directory">
 		</a>
 		
@@ -339,7 +376,7 @@
 </code></pre></div><h2 id="一致的编码">一致的编码</h2>
 <p>编码方式（Encoding）做了统一的适配，现在将在不同的浏览器和路由位置属性（params, query 和 hash）中保持一致。router.push是幂等的impodent，及作为参数传递给 router.push() 时，不需要做任何编码，在你使用 $route 或 useRoute()去拿到参数的时候永远是解码（Decoded）的状态。</p>
 <h2 id="迁移成本低">迁移成本低</h2>
-<p>Vue Router 4 主要致力于于在改善现有 Router 的同时保持非常相似的 API，如果你已经很上手旧版的 Vue Router 了，那你的迁移会做的很顺利，可以查看文档中的完整迁移指南[5]。</p>
+<p>Vue Router 4 主要致力于于在改善现有 Router 的同时保持非常相似的 API，如果你已经很上手旧版的 Vue Router 了，那你的迁移会做的很顺利，可以查看文档中的完整迁移指南。</p>
 <h2 id="展望未来">展望未来</h2>
 <p>在过去的几个月中，Vue Router 一直稳定而且好用，现在它可以做些更好玩的事儿了：</p>
 <ul>
@@ -349,28 +386,22 @@
 <li>开发更轻型的版本。</li>
 </ul>
 <h2 id="breaking-changespartial">Breaking Changes(partial)</h2>
-<h3 id="removed--star-or-catch-all-routes">Removed * (star or catch all) routes</h3>
-<p>Catch all routes (<em>, /</em>) must now be defined using a parameter with a custom regex:</p>
-<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="c1">// pathMatch is the name of the param, e.g., going to /not/found yields
-</span><span class="c1"></span>  <span class="c1">// { params: { pathMatch: [&#39;not&#39;, &#39;found&#39;] }}
-</span><span class="c1"></span>  <span class="c1">// this is thanks to the last *, meaning repeated params and it is necessary if you
-</span><span class="c1"></span>  <span class="c1">// plan on directly navigating to the not-found route using its name
-</span><span class="c1"></span>  <span class="p">{</span> <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/:pathMatch(.*)*&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;not-found&#39;</span><span class="p">,</span> <span class="nx">component</span><span class="o">:</span> <span class="nx">NotFound</span> <span class="p">},</span>
-  <span class="c1">// if you omit the last `*`, the `/` character in params will be encoded when resolving or pushing
-</span><span class="c1"></span>  <span class="p">{</span> <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/:pathMatch(.*)&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;bad-not-found&#39;</span><span class="p">,</span> <span class="nx">component</span><span class="o">:</span> <span class="nx">NotFound</span> <span class="p">},</span>
-<span class="p">]</span>
-<span class="c1">// bad example if using named routes:
-</span><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">resolve</span><span class="p">({</span>
-  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;bad-not-found&#39;</span><span class="p">,</span>
-  <span class="nx">params</span><span class="o">:</span> <span class="p">{</span> <span class="nx">pathMatch</span><span class="o">:</span> <span class="s1">&#39;not/found&#39;</span> <span class="p">},</span>
-<span class="p">}).</span><span class="nx">href</span> <span class="c1">// &#39;/not%2Ffound&#39;
-</span><span class="c1">// good example:
-</span><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">resolve</span><span class="p">({</span>
-  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;not-found&#39;</span><span class="p">,</span>
-  <span class="nx">params</span><span class="o">:</span> <span class="p">{</span> <span class="nx">pathMatch</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;found&#39;</span><span class="p">]</span> <span class="p">},</span>
-<span class="p">}).</span><span class="nx">href</span> <span class="c1">// &#39;/not/found&#39;
-</span></code></pre></div><h3 id="missing-required-params-on-named-routes">Missing required params on named routes</h3>
+<h3 id="new-history-option-to-replace-mode">New history option to replace mode</h3>
+<p>The mode: &lsquo;history&rsquo; option has been replaced with a more flexible one named history. Depending on which mode you were using, you will have to replace it with the appropriate function:</p>
+<ul>
+<li>&ldquo;history&rdquo;: createWebHistory()</li>
+<li>&ldquo;hash&rdquo;: createWebHashHistory()</li>
+<li>&ldquo;abstract&rdquo;: createMemoryHistory()</li>
+</ul>
+<p>Here is a full snippet:</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kr">import</span> <span class="p">{</span> <span class="nx">createRouter</span><span class="p">,</span> <span class="nx">createWebHistory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;vue-router&#39;</span>
+<span class="c1">// there is also createWebHashHistory and createMemoryHistory
+</span><span class="c1"></span>
+<span class="nx">createRouter</span><span class="p">({</span>
+  <span class="nx">history</span><span class="o">:</span> <span class="nx">createWebHistory</span><span class="p">(</span><span class="s1">&#39;/base-directory/&#39;</span><span class="p">),</span>
+  <span class="nx">routes</span><span class="o">:</span> <span class="p">[],</span>
+<span class="p">})</span>
+</code></pre></div><h3 id="missing-required-params-on-named-routes">Missing required params on named routes</h3>
 <p>Pushing or resolving a named route without its required params will throw an error:</p>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="c1">// given the following route:
 </span><span class="c1"></span><span class="kr">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[{</span> <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/users/:id&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nx">component</span><span class="o">:</span> <span class="nx">UserDetails</span> <span class="p">}]</span>
@@ -384,7 +415,7 @@
 <a class="link" href="https://github.com/vuejs/vue-router-next/releases/tag/v4.0.0"  target="_blank" rel="noopener"
     >Vue Router 4.0 release log</a><br>
 <a class="link" href="https://mp.weixin.qq.com/s/mBd5ErYcSXnOl7Ib9iwx5Q"  target="_blank" rel="noopener"
-    >Vue Router 4.0 正式发布！焕然一新。</a><br>
+    >Vue Router 4.0 正式发布！焕然一新。</a>
 <a class="link" href="https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#%E6%8D%95%E8%8E%B7%E6%89%80%E6%9C%89%E8%B7%AF%E7%94%B1%E6%88%96-404-not-found-%E8%B7%AF%E7%94%B1"  target="_blank" rel="noopener"
     >Vue Router 3.0 文档</a><br>
 <a class="link" href="https://next.router.vuejs.org/"  target="_blank" rel="noopener"
@@ -392,9 +423,11 @@
 <a class="link" href="https://next.router.vuejs.org/guide/migration/index.html#breaking-changes"  target="_blank" rel="noopener"
     >Vue Router 3 - 4 migration</a><br>
 <a class="link" href="https://next.router.vuejs.org/guide/advanced/dynamic-routing.html"  target="_blank" rel="noopener"
-    >Vue Router4 dynamic routing</a><br>
+    >Vue Router4 dynamic routing</a>
 <a class="link" href="https://next.router.vuejs.org/guide/essentials/route-matching-syntax.html"  target="_blank" rel="noopener"
-    >Routes' Matching Syntax</a></p>
+    >Routes' Matching Syntax</a>
+<a class="link" href="https://github.com/vuejs/rfcs/blob/master/active-rfcs/0035-router-scroll-position.md"  target="_blank" rel="noopener"
+    >router-scroll-position</a></p>
 
 </section>
 

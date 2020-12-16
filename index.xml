@@ -51,16 +51,53 @@
     &gt;Path Ranker&lt;/a&gt;这个网页来帮助你计算路由的优先级得分。
 简单来说，越明确的路由排名越高，越模糊则反之，无关顺序，非常有意思。&lt;/p&gt;
 &lt;h2 id=&#34;改进后的导航系统&#34;&gt;改进后的导航系统&lt;/h2&gt;
-&lt;p&gt;新的导航系统更加具有一致性，它改善了滚动行为的体验，使其更加接近原生浏览器的行为。 它还为用户提供了有关导航状态的几乎更多信息，用户可以用这些信息，通过 ProgressBar和 Modal之类的全局 UI 元素让用户的体验变得更好。&lt;/p&gt;
-&lt;h2 id=&#34;更强大的-devtools&#34;&gt;更强大的 Devtools&lt;/h2&gt;
+&lt;p&gt;新的导航系统更加具有一致性，它改善了滚动行为的体验，使其更加接近原生浏览器的行为。 它还为用户提供了有关导航状态的几乎更多信息，用户可以用这些信息，通过 ProgressBar和 Modal之类的全局 UI 元素让用户的体验变得更好。
+改进动机：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;先前的selector默认使用document.querySelector。但是这个API不支持 /^#\d/即以数字开头的id元素，所以vue3团队决定针对这种参数使用getElementById。但是这个API仍不适用于选择某个id元素内的某个class的元素，比如#1one .container。诸如此类的情况都会导致vue-router抛出document.querySelector failed，让用户产生困惑。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;number&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;number&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;selector&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;offset&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;number&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;number&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;基于Element.scrollTo的参数配置ScrollToOptions，vue-router 4进行了改造&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// vue router 3
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;scrollBehavior&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;savedPosition&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;hash&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+      &lt;span class=&#34;nx&#34;&gt;selector&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;hash&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// return { x: 0, y: 200 }
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;// native JS
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;element&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;scrollTo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;top&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;left&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;behavior&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;smooth&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;// vue router 4
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;scrollBehavior&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;savedPosition&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// scroll to id `can~contain-special&amp;gt;characters` + 200px
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+      &lt;span class=&#34;nx&#34;&gt;el&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;#can~contain-special&amp;gt;characters&amp;#39;&lt;/span&gt;
+      &lt;span class=&#34;c1&#34;&gt;// top relative offset
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;      &lt;span class=&#34;nx&#34;&gt;top&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;200&lt;/span&gt;
+      &lt;span class=&#34;c1&#34;&gt;// instead of `offset: { y: 200 }`
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;更强大的-devtools&#34;&gt;更强大的 Devtools&lt;/h2&gt;
 &lt;p&gt;多亏了新的&lt;a class=&#34;link&#34; href=&#34;https://chrome.google.com/webstore/detail/vuejs-devtools/ljjemllljcmogpfapbkkighbhhppjdbg&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vue Devtools&lt;/a&gt;，Vue Router 能够和浏览器进行以下更高级的整合。&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;时间轴记录路由变化：
 &lt;figure&gt;
-		&lt;a href=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640.png&#34; data-size=&#34;776x708&#34;&gt;
-			&lt;img srcset=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_hua8abcd3874835e9fe576584727ada990_32711_480x0_resize_box_2.png 480w, https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_hua8abcd3874835e9fe576584727ada990_32711_1024x0_resize_box_2.png 1024w&#34;
-				src=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640.png&#34; width=&#34;776&#34; height=&#34;708&#34; loading=&#34;lazy&#34;
+		&lt;a href=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/timeline.png&#34; data-size=&#34;1526x976&#34;&gt;
+			&lt;img srcset=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/timeline_hu257b98612f48b583255f4044da167bb6_189352_480x0_resize_box_2.png 480w, https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/timeline_hu257b98612f48b583255f4044da167bb6_189352_1024x0_resize_box_2.png 1024w&#34;
+				src=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/timeline.png&#34; width=&#34;1526&#34; height=&#34;976&#34; loading=&#34;lazy&#34;
 				alt=&#34;Timeline&#34;&gt;
 		&lt;/a&gt;
 		
@@ -69,9 +106,9 @@
 	&lt;/figure&gt;&lt;/li&gt;
 &lt;li&gt;完整 route 目录，能够帮助你轻松进行调试：
 &lt;figure&gt;
-		&lt;a href=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1.png&#34; data-size=&#34;776x303&#34;&gt;
-			&lt;img srcset=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1_huec98436c9748617bf189c5804862eda7_20931_480x0_resize_box_2.png 480w, https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1_huec98436c9748617bf189c5804862eda7_20931_1024x0_resize_box_2.png 1024w&#34;
-				src=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/640_1.png&#34; width=&#34;776&#34; height=&#34;303&#34; loading=&#34;lazy&#34;
+		&lt;a href=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/routes.png&#34; data-size=&#34;1622x696&#34;&gt;
+			&lt;img srcset=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/routes_hu52b1c29700ec304ea01d5e7e1d368a3b_186141_480x0_resize_box_2.png 480w, https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/routes_hu52b1c29700ec304ea01d5e7e1d368a3b_186141_1024x0_resize_box_2.png 1024w&#34;
+				src=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/routes.png&#34; width=&#34;1622&#34; height=&#34;696&#34; loading=&#34;lazy&#34;
 				alt=&#34;Routes directory&#34;&gt;
 		&lt;/a&gt;
 		
@@ -137,7 +174,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;一致的编码&#34;&gt;一致的编码&lt;/h2&gt;
 &lt;p&gt;编码方式（Encoding）做了统一的适配，现在将在不同的浏览器和路由位置属性（params, query 和 hash）中保持一致。router.push是幂等的impodent，及作为参数传递给 router.push() 时，不需要做任何编码，在你使用 $route 或 useRoute()去拿到参数的时候永远是解码（Decoded）的状态。&lt;/p&gt;
 &lt;h2 id=&#34;迁移成本低&#34;&gt;迁移成本低&lt;/h2&gt;
-&lt;p&gt;Vue Router 4 主要致力于于在改善现有 Router 的同时保持非常相似的 API，如果你已经很上手旧版的 Vue Router 了，那你的迁移会做的很顺利，可以查看文档中的完整迁移指南[5]。&lt;/p&gt;
+&lt;p&gt;Vue Router 4 主要致力于于在改善现有 Router 的同时保持非常相似的 API，如果你已经很上手旧版的 Vue Router 了，那你的迁移会做的很顺利，可以查看文档中的完整迁移指南。&lt;/p&gt;
 &lt;h2 id=&#34;展望未来&#34;&gt;展望未来&lt;/h2&gt;
 &lt;p&gt;在过去的几个月中，Vue Router 一直稳定而且好用，现在它可以做些更好玩的事儿了：&lt;/p&gt;
 &lt;ul&gt;
@@ -147,28 +184,22 @@
 &lt;li&gt;开发更轻型的版本。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;breaking-changespartial&#34;&gt;Breaking Changes(partial)&lt;/h2&gt;
-&lt;h3 id=&#34;removed--star-or-catch-all-routes&#34;&gt;Removed * (star or catch all) routes&lt;/h3&gt;
-&lt;p&gt;Catch all routes (&lt;em&gt;, /&lt;/em&gt;) must now be defined using a parameter with a custom regex:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;routes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;
-  &lt;span class=&#34;c1&#34;&gt;// pathMatch is the name of the param, e.g., going to /not/found yields
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// { params: { pathMatch: [&amp;#39;not&amp;#39;, &amp;#39;found&amp;#39;] }}
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// this is thanks to the last *, meaning repeated params and it is necessary if you
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// plan on directly navigating to the not-found route using its name
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;/:pathMatch(.*)*&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;not-found&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;component&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;NotFound&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
-  &lt;span class=&#34;c1&#34;&gt;// if you omit the last `*`, the `/` character in params will be encoded when resolving or pushing
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;/:pathMatch(.*)&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;bad-not-found&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;component&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;NotFound&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;// bad example if using named routes:
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;resolve&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
-  &lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;bad-not-found&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-  &lt;span class=&#34;nx&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;pathMatch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;not/found&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}).&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;href&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// &amp;#39;/not%2Ffound&amp;#39;
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// good example:
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;resolve&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
-  &lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;not-found&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-  &lt;span class=&#34;nx&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;pathMatch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;not&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;found&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}).&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;href&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// &amp;#39;/not/found&amp;#39;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;missing-required-params-on-named-routes&#34;&gt;Missing required params on named routes&lt;/h3&gt;
+&lt;h3 id=&#34;new-history-option-to-replace-mode&#34;&gt;New history option to replace mode&lt;/h3&gt;
+&lt;p&gt;The mode: &amp;lsquo;history&amp;rsquo; option has been replaced with a more flexible one named history. Depending on which mode you were using, you will have to replace it with the appropriate function:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;history&amp;rdquo;: createWebHistory()&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;hash&amp;rdquo;: createWebHashHistory()&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;abstract&amp;rdquo;: createMemoryHistory()&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Here is a full snippet:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;createRouter&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;createWebHistory&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;vue-router&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;// there is also createWebHashHistory and createMemoryHistory
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;createRouter&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;history&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;createWebHistory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;/base-directory/&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;routes&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[],&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;missing-required-params-on-named-routes&#34;&gt;Missing required params on named routes&lt;/h3&gt;
 &lt;p&gt;Pushing or resolving a named route without its required params will throw an error:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// given the following route:
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;routes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;/users/:id&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;user&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;component&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;UserDetails&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}]&lt;/span&gt;
@@ -182,7 +213,7 @@
 &lt;a class=&#34;link&#34; href=&#34;https://github.com/vuejs/vue-router-next/releases/tag/v4.0.0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vue Router 4.0 release log&lt;/a&gt;&lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s/mBd5ErYcSXnOl7Ib9iwx5Q&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Vue Router 4.0 正式发布！焕然一新。&lt;/a&gt;&lt;br&gt;
+    &gt;Vue Router 4.0 正式发布！焕然一新。&lt;/a&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#%E6%8D%95%E8%8E%B7%E6%89%80%E6%9C%89%E8%B7%AF%E7%94%B1%E6%88%96-404-not-found-%E8%B7%AF%E7%94%B1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vue Router 3.0 文档&lt;/a&gt;&lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://next.router.vuejs.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -190,9 +221,11 @@
 &lt;a class=&#34;link&#34; href=&#34;https://next.router.vuejs.org/guide/migration/index.html#breaking-changes&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vue Router 3 - 4 migration&lt;/a&gt;&lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://next.router.vuejs.org/guide/advanced/dynamic-routing.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Vue Router4 dynamic routing&lt;/a&gt;&lt;br&gt;
+    &gt;Vue Router4 dynamic routing&lt;/a&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://next.router.vuejs.org/guide/essentials/route-matching-syntax.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Routes&#39; Matching Syntax&lt;/a&gt;&lt;/p&gt;
+    &gt;Routes&#39; Matching Syntax&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/vuejs/rfcs/blob/master/active-rfcs/0035-router-scroll-position.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;router-scroll-position&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
         <item>
