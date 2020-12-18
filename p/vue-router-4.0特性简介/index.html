@@ -221,7 +221,59 @@
 <li>Router 匹配器：处理类似 /users/:id 的路由解析和优先级处理。</li>
 <li>Router: 将一切连接在一起，并处理路由特定功能，例如导航守卫。</li>
 </ul>
-<h2 id="动态路由">动态路由</h2>
+<pre><code>|____types
+| |____typeGuards.ts // 对route进行校验
+| |____index.ts // type和interface
+|____router.ts // connects everything together and handle routing specific features like navigation guards
+|____RouterLink.ts
+|____errors.ts
+|____globalExtensions.ts
+|____injectionSymbols.ts
+|____utils
+| |____callbacks.ts
+| |____README.md
+| |____index.ts
+| |____env.ts
+|____devtools.ts
+|____location.ts
+|____matcher // handles the parsing of routes /users/:id and its ranking
+| |____pathTokenizer.ts // path解析器，生成token数组tokenizePath
+| |____pathMatcher.ts // 提供createRouteRecordMatcher方法供index调用，在addRoute时创建matcher
+| |____pathParserRanker.ts // 对每一个setment计算score
+| |____types.ts // 定义RouteRecordNormalized作为RouteRecord
+| |____index.ts // 定义并实现RouterMatcher，内部定义matcherMap路由映射；对RouteRecord、RouteProps进行normalize
+|____warning.ts
+|____RouterView.ts
+|____scrollBehavior.ts
+|____history // handles the address bar and is specific to the environment Vue Router runs on (Node, Browser, Mobile, etc)
+| |____common.ts // 列举一些通用的用于History API的interface、type、enum和在两个模式下通用的方法
+| |____hash.ts // hash模式，createWebHashHistory
+| |____html5.ts // html5模式，createWebHistory
+| |____memory.ts // abstract模式，createMemoryHistory, 记录路由队列、监听器和当前位置，实现router方法。如果发现没有浏览器的 API，路由会自动强制进入这个模式
+|____global.d.ts
+|____useApi.ts
+|____index.ts
+|____query.ts
+|____encoding.ts
+|____navigationGuards.ts // 路由守卫
+</code></pre><div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="c1">// src/history/html5.ts
+</span><span class="c1"></span><span class="cm">/**
+</span><span class="cm"> * Creates a normalized history location from a window.location object
+</span><span class="cm"> * @param location -
+</span><span class="cm"> */</span>
+<span class="kd">function</span> <span class="nx">createCurrentLocation</span><span class="p">(</span>
+  <span class="nx">base</span><span class="o">:</span> <span class="nx">string</span><span class="p">,</span>
+  <span class="nx">location</span><span class="o">:</span> <span class="nx">Location</span>
+<span class="p">)</span><span class="o">:</span> <span class="nx">HistoryLocation</span> <span class="p">{}</span>
+<span class="kd">function</span> <span class="nx">useHistoryListeners</span><span class="p">(</span><span class="nx">base</span><span class="o">:</span> <span class="nx">string</span><span class="p">,</span>
+  <span class="nx">historyState</span><span class="o">:</span> <span class="nx">ValueContainer</span><span class="o">&lt;</span><span class="nx">StateEntry</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="nx">currentLocation</span><span class="o">:</span> <span class="nx">ValueContainer</span><span class="o">&lt;</span><span class="nx">HistoryLocation</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="nx">replace</span><span class="o">:</span> <span class="nx">RouterHistory</span><span class="p">[</span><span class="s1">&#39;replace&#39;</span><span class="p">]</span>
+<span class="p">){}</span>
+<span class="kd">function</span> <span class="nx">useHistoryStateNavigation</span><span class="p">(</span><span class="nx">base</span><span class="o">:</span> <span class="nx">string</span><span class="p">)</span> <span class="p">{}</span>
+<span class="kr">export</span> <span class="kd">function</span> <span class="nx">createWebHistory</span><span class="p">(</span><span class="nx">base</span><span class="o">?:</span> <span class="nx">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">RouterHistory</span> <span class="p">{}</span>
+
+</code></pre></div><h2 id="动态路由">动态路由</h2>
 <h3 id="vue-router3">Vue Router3</h3>
 <pre><code>{
   // 会匹配所有路径
@@ -231,11 +283,10 @@
   // 会匹配以 `/user-` 开头的任意路径
   path: '/user-*'
 }
-</code></pre><p>当使用通配符路由时，请确保路由的顺序是正确的，也就是说含有通配符的路由应该放在最后。路由 { path: &lsquo;*&rsquo; } 通常用于客户端 404 错误。如果你使用了History 模式，请确保正确配置你的服务器。
-有时候，同一个路径可以匹配多个路由，此时，匹配的优先级就按照路由的定义顺序：谁先定义的，谁的优先级就最高。</p>
-<p>vue-router 使用 <a class="link" href="https://github.com/pillarjs/path-to-regexp/tree/v1.7.0"  target="_blank" rel="noopener"
-    >path-to-regexp</a> 作为路径匹配引擎，所以支持很多高级的匹配模式，例如：可选的动态路径参数、匹配零个或多个、一个或多个，甚至是自定义正则匹配。查看它的文档学习高阶的路径匹配，还有这个例子 展示 vue-router 怎么使用这类匹配。</p>
-<h3 id="vue-router4">Vue Router4</h3>
+</code></pre><p>vue-router 3使用 <a class="link" href="https://github.com/pillarjs/path-to-regexp/tree/v1.7.0"  target="_blank" rel="noopener"
+    >path-to-regexp</a> 作为路径匹配引擎。
+有时候，同一个路径可以匹配多个路由，此时，匹配的优先级就按照路由的定义顺序：谁先定义的，谁的优先级就最高。当使用通配符路由时，必须确保路由的顺序是正确的，也就是说含有通配符的路由应该放在最后。路由 { path: &lsquo;*&rsquo; } 通常用于客户端 404 错误。如果你使用了History 模式，请确保正确配置你的服务器。</p>
+<h3 id="vue-router-4">Vue Router 4</h3>
 <p>不再使用path-to-regexp，而是使用自己的转化系统。新增了有自动优先级排名的高级路径解析功能，用户新现在可以以随意的顺序定义路由，因为 Router 会根据 URL 字符串表示来猜测应该匹配的路由。
 举个例子来说，你同时写了 /users 和 /:w+ 这两个路由：</p>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
@@ -373,9 +424,7 @@
     <span class="nx">beforeEnter</span><span class="o">:</span> <span class="p">[</span><span class="nx">removeQueryParams</span><span class="p">],</span>
   <span class="p">},</span>
 <span class="p">]</span>
-</code></pre></div><h2 id="一致的编码">一致的编码</h2>
-<p>编码方式（Encoding）做了统一的适配，现在将在不同的浏览器和路由位置属性（params, query 和 hash）中保持一致。router.push是幂等的impodent，及作为参数传递给 router.push() 时，不需要做任何编码，在你使用 $route 或 useRoute()去拿到参数的时候永远是解码（Decoded）的状态。</p>
-<h2 id="迁移成本低">迁移成本低</h2>
+</code></pre></div><h2 id="迁移成本低">迁移成本低</h2>
 <p>Vue Router 4 主要致力于于在改善现有 Router 的同时保持非常相似的 API，如果你已经很上手旧版的 Vue Router 了，那你的迁移会做的很顺利，可以查看文档中的完整迁移指南。</p>
 <h2 id="展望未来">展望未来</h2>
 <p>在过去的几个月中，Vue Router 一直稳定而且好用，现在它可以做些更好玩的事儿了：</p>
@@ -409,25 +458,25 @@
 <span class="c1">// Missing the `id` param will fail
 </span><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span> <span class="p">})</span>
 <span class="nx">router</span><span class="p">.</span><span class="nx">resolve</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;user&#39;</span> <span class="p">})</span>
-</code></pre></div><h2 id="匹配语法">匹配语法</h2>
-<p>todo</p>
-<p>参考资料：<br>
+</code></pre></div><p>参考资料：<br>
+<a class="link" href="https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#%E6%8D%95%E8%8E%B7%E6%89%80%E6%9C%89%E8%B7%AF%E7%94%B1%E6%88%96-404-not-found-%E8%B7%AF%E7%94%B1"  target="_blank" rel="noopener"
+    >Vue Router 3.0 文档</a>
 <a class="link" href="https://github.com/vuejs/vue-router-next/releases/tag/v4.0.0"  target="_blank" rel="noopener"
     >Vue Router 4.0 release log</a><br>
-<a class="link" href="https://mp.weixin.qq.com/s/mBd5ErYcSXnOl7Ib9iwx5Q"  target="_blank" rel="noopener"
-    >Vue Router 4.0 正式发布！焕然一新。</a>
-<a class="link" href="https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#%E6%8D%95%E8%8E%B7%E6%89%80%E6%9C%89%E8%B7%AF%E7%94%B1%E6%88%96-404-not-found-%E8%B7%AF%E7%94%B1"  target="_blank" rel="noopener"
-    >Vue Router 3.0 文档</a><br>
 <a class="link" href="https://next.router.vuejs.org/"  target="_blank" rel="noopener"
     >Vue Router 4.0 doc</a><br>
 <a class="link" href="https://next.router.vuejs.org/guide/migration/index.html#breaking-changes"  target="_blank" rel="noopener"
-    >Vue Router 3 - 4 migration</a><br>
+    >Vue Router Migration</a>
 <a class="link" href="https://next.router.vuejs.org/guide/advanced/dynamic-routing.html"  target="_blank" rel="noopener"
     >Vue Router4 dynamic routing</a>
 <a class="link" href="https://next.router.vuejs.org/guide/essentials/route-matching-syntax.html"  target="_blank" rel="noopener"
     >Routes' Matching Syntax</a>
 <a class="link" href="https://github.com/vuejs/rfcs/blob/master/active-rfcs/0035-router-scroll-position.md"  target="_blank" rel="noopener"
-    >router-scroll-position</a></p>
+    >router-scroll-position</a>
+<a class="link" href="https://paths.esm.dev/?p=AAMeJSyAwR4UbFDAFxAcAGAIJXMAAA.."  target="_blank" rel="noopener"
+    >Path Ranker</a>
+<a class="link" href="https://github.com/vuejs/vue-router-next"  target="_blank" rel="noopener"
+    >vue-router-next GitHub repo</a></p>
 
 </section>
 

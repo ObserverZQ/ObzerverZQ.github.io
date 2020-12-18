@@ -19,7 +19,59 @@
 &lt;li&gt;Router 匹配器：处理类似 /users/:id 的路由解析和优先级处理。&lt;/li&gt;
 &lt;li&gt;Router: 将一切连接在一起，并处理路由特定功能，例如导航守卫。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;动态路由&#34;&gt;动态路由&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;|____types
+| |____typeGuards.ts // 对route进行校验
+| |____index.ts // type和interface
+|____router.ts // connects everything together and handle routing specific features like navigation guards
+|____RouterLink.ts
+|____errors.ts
+|____globalExtensions.ts
+|____injectionSymbols.ts
+|____utils
+| |____callbacks.ts
+| |____README.md
+| |____index.ts
+| |____env.ts
+|____devtools.ts
+|____location.ts
+|____matcher // handles the parsing of routes /users/:id and its ranking
+| |____pathTokenizer.ts // path解析器，生成token数组tokenizePath
+| |____pathMatcher.ts // 提供createRouteRecordMatcher方法供index调用，在addRoute时创建matcher
+| |____pathParserRanker.ts // 对每一个setment计算score
+| |____types.ts // 定义RouteRecordNormalized作为RouteRecord
+| |____index.ts // 定义并实现RouterMatcher，内部定义matcherMap路由映射；对RouteRecord、RouteProps进行normalize
+|____warning.ts
+|____RouterView.ts
+|____scrollBehavior.ts
+|____history // handles the address bar and is specific to the environment Vue Router runs on (Node, Browser, Mobile, etc)
+| |____common.ts // 列举一些通用的用于History API的interface、type、enum和在两个模式下通用的方法
+| |____hash.ts // hash模式，createWebHashHistory
+| |____html5.ts // html5模式，createWebHistory
+| |____memory.ts // abstract模式，createMemoryHistory, 记录路由队列、监听器和当前位置，实现router方法。如果发现没有浏览器的 API，路由会自动强制进入这个模式
+|____global.d.ts
+|____useApi.ts
+|____index.ts
+|____query.ts
+|____encoding.ts
+|____navigationGuards.ts // 路由守卫
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// src/history/html5.ts
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;/**
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt; * Creates a normalized history location from a window.location object
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt; * @param location -
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt; */&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;createCurrentLocation&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;location&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Location&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;HistoryLocation&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;useHistoryListeners&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;historyState&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ValueContainer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;StateEntry&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;currentLocation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ValueContainer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;HistoryLocation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+  &lt;span class=&#34;nx&#34;&gt;replace&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;RouterHistory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;replace&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;){}&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;useHistoryStateNavigation&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;kr&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;createWebHistory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;?:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;RouterHistory&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;动态路由&#34;&gt;动态路由&lt;/h2&gt;
 &lt;h3 id=&#34;vue-router3&#34;&gt;Vue Router3&lt;/h3&gt;
 &lt;pre&gt;&lt;code&gt;{
   // 会匹配所有路径
@@ -29,11 +81,10 @@
   // 会匹配以 `/user-` 开头的任意路径
   path: &#39;/user-*&#39;
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当使用通配符路由时，请确保路由的顺序是正确的，也就是说含有通配符的路由应该放在最后。路由 { path: &amp;lsquo;*&amp;rsquo; } 通常用于客户端 404 错误。如果你使用了History 模式，请确保正确配置你的服务器。
-有时候，同一个路径可以匹配多个路由，此时，匹配的优先级就按照路由的定义顺序：谁先定义的，谁的优先级就最高。&lt;/p&gt;
-&lt;p&gt;vue-router 使用 &lt;a class=&#34;link&#34; href=&#34;https://github.com/pillarjs/path-to-regexp/tree/v1.7.0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;path-to-regexp&lt;/a&gt; 作为路径匹配引擎，所以支持很多高级的匹配模式，例如：可选的动态路径参数、匹配零个或多个、一个或多个，甚至是自定义正则匹配。查看它的文档学习高阶的路径匹配，还有这个例子 展示 vue-router 怎么使用这类匹配。&lt;/p&gt;
-&lt;h3 id=&#34;vue-router4&#34;&gt;Vue Router4&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;vue-router 3使用 &lt;a class=&#34;link&#34; href=&#34;https://github.com/pillarjs/path-to-regexp/tree/v1.7.0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;path-to-regexp&lt;/a&gt; 作为路径匹配引擎。
+有时候，同一个路径可以匹配多个路由，此时，匹配的优先级就按照路由的定义顺序：谁先定义的，谁的优先级就最高。当使用通配符路由时，必须确保路由的顺序是正确的，也就是说含有通配符的路由应该放在最后。路由 { path: &amp;lsquo;*&amp;rsquo; } 通常用于客户端 404 错误。如果你使用了History 模式，请确保正确配置你的服务器。&lt;/p&gt;
+&lt;h3 id=&#34;vue-router-4&#34;&gt;Vue Router 4&lt;/h3&gt;
 &lt;p&gt;不再使用path-to-regexp，而是使用自己的转化系统。新增了有自动优先级排名的高级路径解析功能，用户新现在可以以随意的顺序定义路由，因为 Router 会根据 URL 字符串表示来猜测应该匹配的路由。
 举个例子来说，你同时写了 /users 和 /:w+ 这两个路由：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;routes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;
@@ -171,9 +222,7 @@
     &lt;span class=&#34;nx&#34;&gt;beforeEnter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;removeQueryParams&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;
   &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
 &lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;一致的编码&#34;&gt;一致的编码&lt;/h2&gt;
-&lt;p&gt;编码方式（Encoding）做了统一的适配，现在将在不同的浏览器和路由位置属性（params, query 和 hash）中保持一致。router.push是幂等的impodent，及作为参数传递给 router.push() 时，不需要做任何编码，在你使用 $route 或 useRoute()去拿到参数的时候永远是解码（Decoded）的状态。&lt;/p&gt;
-&lt;h2 id=&#34;迁移成本低&#34;&gt;迁移成本低&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;迁移成本低&#34;&gt;迁移成本低&lt;/h2&gt;
 &lt;p&gt;Vue Router 4 主要致力于于在改善现有 Router 的同时保持非常相似的 API，如果你已经很上手旧版的 Vue Router 了，那你的迁移会做的很顺利，可以查看文档中的完整迁移指南。&lt;/p&gt;
 &lt;h2 id=&#34;展望未来&#34;&gt;展望未来&lt;/h2&gt;
 &lt;p&gt;在过去的几个月中，Vue Router 一直稳定而且好用，现在它可以做些更好玩的事儿了：&lt;/p&gt;
@@ -207,25 +256,25 @@
 &lt;span class=&#34;c1&#34;&gt;// Missing the `id` param will fail
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;push&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;user&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
 &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;resolve&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;user&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;匹配语法&#34;&gt;匹配语法&lt;/h2&gt;
-&lt;p&gt;todo&lt;/p&gt;
-&lt;p&gt;参考资料：&lt;br&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;参考资料：&lt;br&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#%E6%8D%95%E8%8E%B7%E6%89%80%E6%9C%89%E8%B7%AF%E7%94%B1%E6%88%96-404-not-found-%E8%B7%AF%E7%94%B1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Vue Router 3.0 文档&lt;/a&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://github.com/vuejs/vue-router-next/releases/tag/v4.0.0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vue Router 4.0 release log&lt;/a&gt;&lt;br&gt;
-&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s/mBd5ErYcSXnOl7Ib9iwx5Q&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Vue Router 4.0 正式发布！焕然一新。&lt;/a&gt;
-&lt;a class=&#34;link&#34; href=&#34;https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#%E6%8D%95%E8%8E%B7%E6%89%80%E6%9C%89%E8%B7%AF%E7%94%B1%E6%88%96-404-not-found-%E8%B7%AF%E7%94%B1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Vue Router 3.0 文档&lt;/a&gt;&lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://next.router.vuejs.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vue Router 4.0 doc&lt;/a&gt;&lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://next.router.vuejs.org/guide/migration/index.html#breaking-changes&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Vue Router 3 - 4 migration&lt;/a&gt;&lt;br&gt;
+    &gt;Vue Router Migration&lt;/a&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://next.router.vuejs.org/guide/advanced/dynamic-routing.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vue Router4 dynamic routing&lt;/a&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://next.router.vuejs.org/guide/essentials/route-matching-syntax.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Routes&#39; Matching Syntax&lt;/a&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://github.com/vuejs/rfcs/blob/master/active-rfcs/0035-router-scroll-position.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;router-scroll-position&lt;/a&gt;&lt;/p&gt;
+    &gt;router-scroll-position&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://paths.esm.dev/?p=AAMeJSyAwR4UbFDAFxAcAGAIJXMAAA..&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Path Ranker&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/vuejs/vue-router-next&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;vue-router-next GitHub repo&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
         <item>
