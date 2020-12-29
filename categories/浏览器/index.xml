@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>浏览器 on Observer的小家</title>
+    <link>https://observerzq.github.io/ObzerverZQ.github.io/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/</link>
+    <description>Recent content in 浏览器 on Observer的小家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Dec 2020 12:03:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>前端知识汇总（一）：浏览器事件模型和事件循环</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/</link>
+      <pubDate>Mon, 28 Dec 2020 12:03:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/</guid>
+      <description>事件模型 不论是浏览器还是Node.js，都有自己的事件模型，它们都是事件驱动的，即依靠事件来维持运行。 现在比较推荐的绑定事件的方法是addEventListener：
+target.addEventListener(type, listener[, options]); target.addEventListener(type, listener[, useCapture]); target.addEventListener(type, listener[, useCapture, wantsUntrusted ]); // Gecko/Mozilla only 旧版本的第三个参数是bool，表示是否是捕获阶段，默认是false，即默认为冒泡阶段。新版本是一个对象，其中有capture（和上面功能一样），passive和once。once用来执行是否只执行一次，passive如果被指定为true, 表示永远不会执行preventDefault(),这在实现丝滑柔顺的滚动的效果中很重要。Improving scrolling performance with passive listeners
+框架中的事件 框架中的事件 实际上，我们现在大多数情况都是用框架来写代码，因此上面的情况其实在现实中是非常少见的，我们更多看到的是框架封装好的事件，比如React的合成事件，感兴趣的可以看下这几篇文章。
+ React SyntheticEvent Vue和React的优点分别是什么？两者的最核心差异对比是什么？  虽然我们很少时候会接触到原生的事件，但是了解一下事件对象，事件机制，事件代理等还是很有必要的，因为框架的事件系统至少在这方面还是一致的，这些内容我们接下来就会讲到。
+事件对象 function handleClick(e: Event) { // ... } 这个e就是事件对象，它包含一些重要属性和方法：
+ 属性   target x, y等位置信息 timeStamp eventPhase   方法   preventDefault 用于阻止浏览器的默认行为，比如a标签会默认进行跳转，form会默认校验并发送请求到action指定的地址等 stopPropagation 用于阻止事件的继续冒泡行为，后面讲事件传播的时候会提到。  事件循环 事件指的是其所处理的对象就是事件本身，每一个浏览器都至少有一个事件循环，一个事件循环至少有一个任务队列。循环指的是其永远处于一个“无限循环”中。不断将注册的回调函数推入到执行栈。 一段JS代码，需要被编译成机器可理解并执行的指令，这就依赖JS引擎。而V8引擎中，有两个核心组成，即执行栈和堆。执行栈中存放正在执行的代码段，堆中存放变量的值。以一段简单代码为例：
+function c() {} function b() { c(); } function a() { b(); }a(); 代码执行的过程可以用动图表示：   call stack</description>
+    </item>
+    
+  </channel>
+</rss>

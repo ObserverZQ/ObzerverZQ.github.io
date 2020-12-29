@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='本文主要介绍浏览器相关知识，包括事件循环、进程和线程、安全策略等'><title>前端知识汇总（一）：浏览器事件模型和事件循环</title>
+
+<link rel='canonical' href='https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/'>
+
+<link rel="stylesheet" href="/ObzerverZQ.github.io/scss/style.min.css"><meta property='og:title' content='前端知识汇总（一）：浏览器事件模型和事件循环'>
+<meta property='og:description' content='本文主要介绍浏览器相关知识，包括事件循环、进程和线程、安全策略等'>
+<meta property='og:url' content='https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/'>
+<meta property='og:site_name' content='Observer的小家'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='interview' /><meta property='article:tag' content='浏览器' /><meta property='article:tag' content='事件循环' /><meta property='article:published_time' content='2020-12-28T12:03:26&#43;08:00'/><meta property='article:modified_time' content='2020-12-28T12:03:26&#43;08:00'/><meta property='og:image' content='https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/cover.jpg' />
+<meta name="twitter:title" content="前端知识汇总（一）：浏览器事件模型和事件循环">
+<meta name="twitter:description" content="本文主要介绍浏览器相关知识，包括事件循环、进程和线程、安全策略等"><meta name="twitter:card" content="">
+	<meta name="twitter:image" content='https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/cover.jpg' />
+    </head>
+    <body class="">
+        <div class="container flex on-phone--column align-items--flex-start extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/ObzerverZQ.github.io/img/avatar_huf4d83bafa5838b1714e814874f4f8037_84351_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">👩🏻‍💻</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://observerzq.github.io/ObzerverZQ.github.io/">Observer的小家</a></h1>
+        <h2 class="site-description">一个前端小白.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/ObzerverZQ.github.io/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/ObzerverZQ.github.io/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/ObzerverZQ.github.io/post'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Posts</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/ObzerverZQ.github.io/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/ObzerverZQ.github.io/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://observerzq.github.io/ObzerverZQ.github.io/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <img srcset="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/cover_hu958d513eeefe5556a31d065479ecc5ac_14205_1024x0_resize_q75_box.jpg 1024w, /ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/cover_hu958d513eeefe5556a31d065479ecc5ac_14205_2000x0_resize_q75_box.jpg 2000w"
+                    src="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/cover_hu958d513eeefe5556a31d065479ecc5ac_14205_2000x0_resize_q75_box.jpg" width="1500" height="1000" loading="lazy"
+                    alt="Featured image of post 前端知识汇总（一）：浏览器事件模型和事件循环" />
+            
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/ObzerverZQ.github.io/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" 
+                    class="color-tag"
+                    data-image="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/cover_hu958d513eeefe5556a31d065479ecc5ac_14205_20x20_fill_q75_box_smart1.jpg" 
+                    data-key="" 
+                    data-hash="md5-jq4GZk3fs&#43;jcbgAHVstwOw==">
+                    浏览器
+                </a>
+            
+        
+            <a href="/ObzerverZQ.github.io/categories/%E5%89%8D%E7%AB%AF/" 
+                    class="color-tag"
+                    data-image="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/cover_hu958d513eeefe5556a31d065479ecc5ac_14205_20x20_fill_q75_box_smart1.jpg" 
+                    data-key="" 
+                    data-hash="md5-jq4GZk3fs&#43;jcbgAHVstwOw==">
+                    前端
+                </a>
+            
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/">前端知识汇总（一）：浏览器事件模型和事件循环</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        本文主要介绍浏览器相关知识，包括事件循环、进程和线程、安全策略等
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Dec 28, 2020</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <h2 id="事件模型">事件模型</h2>
+<p>不论是浏览器还是Node.js，都有自己的事件模型，它们都是事件驱动的，即依靠事件来维持运行。
+现在比较推荐的绑定事件的方法是addEventListener：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">target</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">listener</span><span class="p">[,</span> <span class="nx">options</span><span class="p">]);</span>
+<span class="nx">target</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">listener</span><span class="p">[,</span> <span class="nx">useCapture</span><span class="p">]);</span>
+<span class="nx">target</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">listener</span><span class="p">[,</span> <span class="nx">useCapture</span><span class="p">,</span> <span class="nx">wantsUntrusted</span>  <span class="p">]);</span> <span class="c1">// Gecko/Mozilla only
+</span></code></pre></div><p>旧版本的第三个参数是bool，表示是否是捕获阶段，默认是false，即默认为冒泡阶段。新版本是一个对象，其中有capture（和上面功能一样），passive和once。once用来执行是否只执行一次，passive如果被指定为true, 表示永远不会执行preventDefault(),这在实现丝滑柔顺的滚动的效果中很重要。<a class="link" href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Improving_scrolling_performance_with_passive_listeners"  target="_blank" rel="noopener"
+    >Improving scrolling performance with passive listeners</a></p>
+<h3 id="框架中的事件">框架中的事件</h3>
+<p>框架中的事件
+实际上，我们现在大多数情况都是用框架来写代码，因此上面的情况其实在现实中是非常少见的，我们更多看到的是框架封装好的事件，比如React的合成事件，感兴趣的可以看下这几篇文章。</p>
+<ul>
+<li><a class="link" href="https://reactjs.org/docs/events.html"  target="_blank" rel="noopener"
+    >React SyntheticEvent</a></li>
+<li><a class="link" href="https://developer.51cto.com/art/201907/599732.htm"  target="_blank" rel="noopener"
+    >Vue和React的优点分别是什么？两者的最核心差异对比是什么？</a></li>
+</ul>
+<p>虽然我们很少时候会接触到原生的事件，但是了解一下事件对象，事件机制，事件代理等还是很有必要的，因为框架的事件系统至少在这方面还是一致的，这些内容我们接下来就会讲到。</p>
+<h3 id="事件对象">事件对象</h3>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">handleClick</span><span class="p">(</span><span class="nx">e</span><span class="o">:</span> <span class="nx">Event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>这个e就是事件对象，它包含一些重要属性和方法：</p>
+<ul>
+<li>属性</li>
+</ul>
+<ol>
+<li>target</li>
+<li>x, y等位置信息</li>
+<li>timeStamp</li>
+<li>eventPhase</li>
+</ol>
+<ul>
+<li>方法</li>
+</ul>
+<ol>
+<li>preventDefault 用于阻止浏览器的默认行为，比如a标签会默认进行跳转，form会默认校验并发送请求到action指定的地址等</li>
+<li>stopPropagation 用于阻止事件的继续冒泡行为，后面讲事件传播的时候会提到。</li>
+</ol>
+<h2 id="事件循环">事件循环</h2>
+<p>事件指的是其所处理的对象就是事件本身，每一个浏览器都至少有一个事件循环，一个事件循环至少有一个任务队列。循环指的是其永远处于一个“无限循环”中。不断将注册的回调函数推入到执行栈。
+一段JS代码，需要被编译成机器可理解并执行的指令，这就依赖JS引擎。而V8引擎中，有两个核心组成，即<strong>执行栈</strong>和<strong>堆</strong>。执行栈中存放正在执行的代码段，堆中存放变量的值。以一段简单代码为例：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">c</span><span class="p">()</span> <span class="p">{}</span>
+<span class="kd">function</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">c</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">b</span><span class="p">();</span>
+<span class="p">}</span><span class="nx">a</span><span class="p">();</span>
+</code></pre></div><p>代码执行的过程可以用动图表示：
+<figure>
+		<a href="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack.gif" data-size="599x358">
+			<img srcset="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack_hu203f2479c104feeb837aa094cef06954_157786_480x0_resize_box.gif 480w, /ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack_hu203f2479c104feeb837aa094cef06954_157786_1024x0_resize_box.gif 1024w"
+				src="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack.gif" width="599" height="358" loading="lazy"
+				alt="call stack">
+		</a>
+		
+		<figcaption>call stack</figcaption>
+		
+	</figure></p>
+<h3 id="dom和web-api">DOM和Web API</h3>
+<p>JS对应的ECMA规范，V8只有堆和栈，用来实现ECMA规范，它与DOM（文档对象模型，其提供了一系列可以供JS调用的接口）、Web API、事件循环等执行环境如浏览器包含的内容不相关。
+JS执行栈与渲染线程互相阻塞，为的是避免并行时JS获取DOM信息之后对DOM进行操作，而DOM本身同时也发生了变化，这样就会导致错乱和冲突。</p>
+<h3 id="单线程同步多线程同步异步">单线程同步、多线程同步、异步</h3>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">fetchUserInfoSync</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingA</span><span class="p">);</span> <span class="c1">// 1s
+</span><span class="c1"></span><span class="nx">fetchMyArcticlesSync</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingB</span><span class="p">);</span><span class="c1">// 3s
+</span><span class="c1"></span><span class="nx">fetchMyFriendsSync</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingC</span><span class="p">);</span><span class="c1">// 2s
+</span></code></pre></div><p>在单线程的情况下，由于JS与渲染线程互相阻塞，因此发出三个接口异步请求时后续代码都被阻塞，数据需要耗时6s，这显然是不可接受的；
+在多线程的情况下，最理想状态下需要耗时3s，但是因为三个线程都可以访问DOM和堆内存，很可能造成冲突，若要避免冲突就要设计锁🔒，这样会导致代码模型更加复杂，耗时必然大于3s；
+在异步的情况下，就涉及到<strong>事件循环</strong>。</p>
+<h3 id="事件循环如何实现异步">事件循环如何实现异步</h3>
+<p>事件循环在浏览器和NodeJs中都是用于调度的，它决定了V8什么时候执行什么代码。<strong>V8只是负责JS代码的解析和执行，其他一概不知。</strong> 浏览器或者NodeJS中触发事件之后，到事件的监听函数被V8执行这个时间段的所有工作都是事件循环在起作用。
+我们来小结一下：</p>
+<p>对于V8来说，它有：
+调用栈（call stack）
+这里的单线程指的是只有一个call stack。只有一个call stack 意味着同一时间只能执行一段代码。</p>
+<p>堆（heap）
+对于浏览器运行环境来说：
+WEB API
+DOM API
+任务队列
+事件来触发事件循环进行流动</p>
+<p>事件循环之所以可以实现异步，就是将类似setTimeout等异步执行的代码注册/绑定的回调函数存起来，后面再将任务推入执行栈中。如图所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">c</span><span class="p">()</span> <span class="p">{}</span>
+<span class="kd">function</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">c</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">setTimeout</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">a</span><span class="p">();</span>
+</code></pre></div><p><figure>
+		<a href="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack2.gif" data-size="600x288">
+			<img srcset="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack2_huc97b38fc4f1df63885a6a7ed5c4f59de_128397_480x0_resize_box.gif 480w, /ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack2_huc97b38fc4f1df63885a6a7ed5c4f59de_128397_1024x0_resize_box.gif 1024w"
+				src="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack2.gif" width="600" height="288" loading="lazy"
+				alt="setTimeout">
+		</a>
+		
+		<figcaption>setTimeout</figcaption>
+		
+	</figure></p>
+<p>加入用户交互之后，可见示例：
+<a href="http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D">http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D</a></p>
+<p>setTimeout代码执行后会将回调函数放入Web API中，计时结束后注册的回调函数会插入Callback queue中，待到Call Stack为空即浏览器空闲的时候时排队插入Call Stack被执行。</p>
+<p>加入<strong>宏任务</strong>和<strong>微任务</strong>，来看一个更复杂的例子：</p>
+<pre><code class="language-javascirpt" data-lang="javascirpt">console.log(1)
+
+setTimeout(() =&gt; {
+  console.log(2)
+}, 0)
+
+Promise.resolve().then(() =&gt; {
+	return console.log(3)
+}).then(() =&gt; {
+	console.log(4)
+})
+
+console.log(5)
+</code></pre><p>上面的代码会输出：1、5、3、4、2。 如果你想要非常严谨的解释可以参考 whatwg 对其进行的描述 <a class="link" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model"  target="_blank" rel="noopener"
+    >cievent-loop-processing-model</a>。</p>
+<p>下面我会对其进行一个简单的解释。</p>
+<ul>
+<li>浏览器首先执行宏任务，也就是我们script（仅仅执行一次）</li>
+<li>完成之后检查是否存在微任务，然后不停执行，直到清空队列</li>
+<li>执行宏任务
+其中：</li>
+</ul>
+<p>宏任务主要包含：setTimeout、setInterval、setImmediate、I/O、UI交互事件</p>
+<p>微任务主要包含：Promise、process.nextTick、MutaionObserver 等</p>
+<p><figure>
+		<a href="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/circle.jpg" data-size="585x357">
+			<img srcset="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/circle_hu93859fa7e41e6c4fbcf69bdbf1b42942_16802_480x0_resize_q75_box.jpg 480w, /ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/circle_hu93859fa7e41e6c4fbcf69bdbf1b42942_16802_1024x0_resize_q75_box.jpg 1024w"
+				src="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/circle.jpg" width="585" height="357" loading="lazy"
+				alt="事件循环示意图">
+		</a>
+		
+		<figcaption>事件循环示意图</figcaption>
+		
+	</figure></p>
+<p>有了这个知识，我们不难得出上面代码的输出结果。</p>
+<p>由此我们可以看出，宏任务&amp;微任务只是实现异步过程中，我们对于信号的处理顺序不同而已。如果我们不加区分，全部放到一个队列，就不会有宏任务&amp;微任务。这种人为划分优先级的过程，在某些时候非常有用。</p>
+<h3 id="加入执行上下文栈">加入执行上下文栈</h3>
+<p>说到执行上下文，就不得不提到浏览器执行JS函数其实是分两个过程的。一个是<strong>创建阶段Creation Phase</strong>，一个是<strong>执行阶段Execution Phase</strong>。</p>
+<p>同执行栈一样，浏览器每遇到一个函数，也会将当前函数的执行上下文栈推入栈顶。</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">a</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">function</span> <span class="nx">b</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">function</span> <span class="nx">c</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kr">const</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">3</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">num</span> <span class="o">+</span> <span class="nx">n</span><span class="p">)</span>
+		<span class="p">}</span>
+		<span class="nx">c</span><span class="p">(</span><span class="nx">num</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="nx">b</span><span class="p">(</span><span class="nx">num</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">a</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></div><p>遇到上面的代码。 首先会将a的压入执行栈，我们开始进行创建阶段Creation Phase， 将a的执行上下文压入栈。然后初始化a的执行上下文，分别是<strong>VO，ScopeChain（VO chain）和 This</strong>。 从这里我们也可以看出，this其实是动态决定的。VO指的是<strong>variables, functions 和 arguments</strong>。 并且执行上下文栈也会同步随着执行栈的销毁而销毁。</p>
+<p>伪代码表示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">EC</span>  <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;scopeChain&#39;</span><span class="o">:</span> <span class="p">{</span> <span class="p">},</span>
+    <span class="s1">&#39;variableObject&#39;</span><span class="o">:</span> <span class="p">{</span> <span class="p">},</span>
+    <span class="s1">&#39;this&#39;</span><span class="o">:</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p><figure>
+		<a href="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/execution_context_stack.jpg" data-size="809x432">
+			<img srcset="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/execution_context_stack_hu669dbe3834de674e993194e331472983_56039_480x0_resize_q75_box.jpg 480w, /ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/execution_context_stack_hu669dbe3834de674e993194e331472983_56039_1024x0_resize_q75_box.jpg 1024w"
+				src="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/execution_context_stack.jpg" width="809" height="432" loading="lazy"
+				alt="execution context stack">
+		</a>
+		
+		<figcaption>execution context stack</figcaption>
+		
+	</figure>
+我们来重点看一下ScopeChain(VO chain)。如上图的执行上下文大概长这个样子，伪代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript">
+<span class="nx">global</span><span class="p">.</span><span class="nx">VO</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="o">:</span> <span class="nx">pointer</span> <span class="nx">to</span> <span class="nx">a</span><span class="p">(),</span>
+    <span class="nx">scopeChain</span><span class="o">:</span> <span class="p">[</span><span class="nx">global</span><span class="p">.</span><span class="nx">VO</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="nx">a</span><span class="p">.</span><span class="nx">VO</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">b</span><span class="o">:</span> <span class="nx">pointer</span> <span class="nx">to</span> <span class="nx">b</span><span class="p">(),</span>
+    <span class="nx">arguments</span><span class="o">:</span> <span class="p">{</span>
+		<span class="mi">0</span><span class="o">:</span> <span class="mi">1</span>
+	<span class="p">},</span>
+    <span class="nx">scopeChain</span><span class="o">:</span> <span class="p">[</span><span class="nx">a</span><span class="p">.</span><span class="nx">VO</span><span class="p">,</span> <span class="nx">global</span><span class="p">.</span><span class="nx">VO</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="nx">b</span><span class="p">.</span><span class="nx">VO</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="nx">c</span><span class="o">:</span> <span class="nx">pointer</span> <span class="nx">to</span> <span class="nx">c</span><span class="p">(),</span>
+	<span class="nx">arguments</span><span class="o">:</span> <span class="p">{</span>
+		<span class="mi">0</span><span class="o">:</span> <span class="mi">1</span>
+	<span class="p">},</span>
+	<span class="nx">scopeChain</span><span class="o">:</span> <span class="p">[</span><span class="nx">b</span><span class="p">.</span><span class="nx">VO</span><span class="p">,</span> <span class="nx">a</span><span class="p">.</span><span class="nx">VO</span><span class="p">,</span> <span class="nx">global</span><span class="p">.</span><span class="nx">VO</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">VO</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="nx">arguments</span><span class="o">:</span> <span class="p">{</span>
+		<span class="mi">0</span><span class="o">:</span> <span class="mi">1</span>
+	<span class="p">},</span>
+	<span class="nx">n</span><span class="o">:</span> <span class="mi">3</span>
+	<span class="nx">scopeChain</span><span class="o">:</span> <span class="p">[</span><span class="nx">c</span><span class="p">.</span><span class="nx">VO</span><span class="p">,</span> <span class="nx">b</span><span class="p">.</span><span class="nx">VO</span><span class="p">,</span> <span class="nx">a</span><span class="p">.</span><span class="nx">VO</span><span class="p">,</span> <span class="nx">global</span><span class="p">.</span><span class="nx">VO</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div><p>引擎查找变量的时候，会先从VOC开始找，找不到会继续去VOB…，直到GlobalVO，如果GlobalVO也找不到会返回<strong>Referrence Error</strong>，整个过程类似原型链的查找。</p>
+<p>值得一提的是，JS是词法作用域，也就是静态作用域。换句话说就是作用域取决于代码定义的位置，而不是执行的位置，这也就是<strong>闭包产生的本质原因</strong>。 如果上面的代码改造成下面的：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">c</span><span class="p">()</span> <span class="p">{}</span>
+<span class="kd">function</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{}</span>
+<span class="kd">function</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{}</span>
+<span class="nx">a</span><span class="p">()</span>
+<span class="nx">b</span><span class="p">()</span>
+<span class="nx">c</span><span class="p">()</span>
+
+<span class="c1">// 或者这种
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">c</span><span class="p">()</span> <span class="p">{}</span>
+<span class="kd">function</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">c</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">b</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="nx">a</span><span class="p">();</span>
+</code></pre></div><p>其执行上下文栈虽然都是一样的，但是其对应的scopeChain则完全不同，因为函数定义的位置发生了变化。拿上面的代码片段来说,c.VO会变成这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">c</span><span class="p">.</span><span class="nx">VO</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="nx">scopeChain</span><span class="o">:</span> <span class="p">[</span><span class="nx">c</span><span class="p">.</span><span class="nx">VO</span><span class="p">,</span> <span class="nx">global</span><span class="p">.</span><span class="nx">VO</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div><p>也就是说其再也无法获取到a和b中的VO了。
+一图总结本文如下：
+<figure>
+		<a href="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/v8_engine.jpg" data-size="752x919">
+			<img srcset="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/v8_engine_hu34876f429b8d321b95f1f7cfd637ee6d_41474_480x0_resize_q75_box.jpg 480w, /ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/v8_engine_hu34876f429b8d321b95f1f7cfd637ee6d_41474_1024x0_resize_q75_box.jpg 1024w"
+				src="/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/v8_engine.jpg" width="752" height="919" loading="lazy"
+				alt="v8_engine.jpg">
+		</a>
+		
+		<figcaption>v8_engine.jpg</figcaption>
+		
+	</figure></p>
+<p>参考资料：
+<a class="link" href="https://lucifer.ren/blog/2019/12/11/event-loop/"  target="_blank" rel="noopener"
+    >《一文看懂浏览器事件循环》</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/ObzerverZQ.github.io/tags/interview/">interview</a>
+        
+            <a href="/ObzerverZQ.github.io/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+        
+            <a href="/ObzerverZQ.github.io/tags/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/">事件循环</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/">
+        
+        
+            <div class="article-image">
+                <img src="/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/cover_hu0a3f1163de68d0b9471979ebf0ecf11e_32400_250x150_fill_q75_box_smart1.jpg" width="250" height="150" 
+                        loading="lazy" data-key="" data-hash="md5-rC&#43;UhC7sa7h6Y66uIugvQQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vue Router 4.0特性简介</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">&copy; 2020 Observer的小家</section>
+    <section class="powerby">Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="1.1.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true" style="display:none">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+            </main>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"
+    integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin="anonymous"></script><script type="text/javascript" src="/ObzerverZQ.github.io/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<link rel="stylesheet" href="/ObzerverZQ.github.io/css/highlight/light.min.css" media="(prefers-color-scheme: light)">
+<link rel="stylesheet" href="/ObzerverZQ.github.io/css/highlight/dark.min.css" media="(prefers-color-scheme: dark)">
+
+    </body>
+</html>

@@ -6,7 +6,253 @@
         <description>Recent content on Observer的小家</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sun, 13 Dec 2020 19:23:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 28 Dec 2020 12:03:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>前端知识汇总（一）：浏览器事件模型和事件循环</title>
+        <link>https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/</link>
+        <pubDate>Mon, 28 Dec 2020 12:03:26 +0800</pubDate>
+        
+        <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/</guid>
+        <description>&lt;img src="https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/cover.jpg" alt="Featured image of post 前端知识汇总（一）：浏览器事件模型和事件循环" /&gt;&lt;h2 id=&#34;事件模型&#34;&gt;事件模型&lt;/h2&gt;
+&lt;p&gt;不论是浏览器还是Node.js，都有自己的事件模型，它们都是事件驱动的，即依靠事件来维持运行。
+现在比较推荐的绑定事件的方法是addEventListener：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;nx&#34;&gt;target&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addEventListener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;listener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;options&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;target&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addEventListener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;listener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;useCapture&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;target&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addEventListener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;listener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;useCapture&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;wantsUntrusted&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// Gecko/Mozilla only
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;旧版本的第三个参数是bool，表示是否是捕获阶段，默认是false，即默认为冒泡阶段。新版本是一个对象，其中有capture（和上面功能一样），passive和once。once用来执行是否只执行一次，passive如果被指定为true, 表示永远不会执行preventDefault(),这在实现丝滑柔顺的滚动的效果中很重要。&lt;a class=&#34;link&#34; href=&#34;https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Improving_scrolling_performance_with_passive_listeners&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Improving scrolling performance with passive listeners&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;框架中的事件&#34;&gt;框架中的事件&lt;/h3&gt;
+&lt;p&gt;框架中的事件
+实际上，我们现在大多数情况都是用框架来写代码，因此上面的情况其实在现实中是非常少见的，我们更多看到的是框架封装好的事件，比如React的合成事件，感兴趣的可以看下这几篇文章。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://reactjs.org/docs/events.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;React SyntheticEvent&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.51cto.com/art/201907/599732.htm&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Vue和React的优点分别是什么？两者的最核心差异对比是什么？&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;虽然我们很少时候会接触到原生的事件，但是了解一下事件对象，事件机制，事件代理等还是很有必要的，因为框架的事件系统至少在这方面还是一致的，这些内容我们接下来就会讲到。&lt;/p&gt;
+&lt;h3 id=&#34;事件对象&#34;&gt;事件对象&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;handleClick&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Event&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// ...
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这个e就是事件对象，它包含一些重要属性和方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;属性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;target&lt;/li&gt;
+&lt;li&gt;x, y等位置信息&lt;/li&gt;
+&lt;li&gt;timeStamp&lt;/li&gt;
+&lt;li&gt;eventPhase&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;方法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;preventDefault 用于阻止浏览器的默认行为，比如a标签会默认进行跳转，form会默认校验并发送请求到action指定的地址等&lt;/li&gt;
+&lt;li&gt;stopPropagation 用于阻止事件的继续冒泡行为，后面讲事件传播的时候会提到。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;事件循环&#34;&gt;事件循环&lt;/h2&gt;
+&lt;p&gt;事件指的是其所处理的对象就是事件本身，每一个浏览器都至少有一个事件循环，一个事件循环至少有一个任务队列。循环指的是其永远处于一个“无限循环”中。不断将注册的回调函数推入到执行栈。
+一段JS代码，需要被编译成机器可理解并执行的指令，这就依赖JS引擎。而V8引擎中，有两个核心组成，即&lt;strong&gt;执行栈&lt;/strong&gt;和&lt;strong&gt;堆&lt;/strong&gt;。执行栈中存放正在执行的代码段，堆中存放变量的值。以一段简单代码为例：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;代码执行的过程可以用动图表示：
+&lt;figure&gt;
+		&lt;a href=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack.gif&#34; data-size=&#34;599x358&#34;&gt;
+			&lt;img srcset=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack_hu203f2479c104feeb837aa094cef06954_157786_480x0_resize_box.gif 480w, https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack_hu203f2479c104feeb837aa094cef06954_157786_1024x0_resize_box.gif 1024w&#34;
+				src=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack.gif&#34; width=&#34;599&#34; height=&#34;358&#34; loading=&#34;lazy&#34;
+				alt=&#34;call stack&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;call stack&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&#34;dom和web-api&#34;&gt;DOM和Web API&lt;/h3&gt;
+&lt;p&gt;JS对应的ECMA规范，V8只有堆和栈，用来实现ECMA规范，它与DOM（文档对象模型，其提供了一系列可以供JS调用的接口）、Web API、事件循环等执行环境如浏览器包含的内容不相关。
+JS执行栈与渲染线程互相阻塞，为的是避免并行时JS获取DOM信息之后对DOM进行操作，而DOM本身同时也发生了变化，这样就会导致错乱和冲突。&lt;/p&gt;
+&lt;h3 id=&#34;单线程同步多线程同步异步&#34;&gt;单线程同步、多线程同步、异步&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;nx&#34;&gt;fetchUserInfoSync&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;then&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;doSomethingA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 1s
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;fetchMyArcticlesSync&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;then&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;doSomethingB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 3s
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;fetchMyFriendsSync&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;then&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;doSomethingC&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 2s
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在单线程的情况下，由于JS与渲染线程互相阻塞，因此发出三个接口异步请求时后续代码都被阻塞，数据需要耗时6s，这显然是不可接受的；
+在多线程的情况下，最理想状态下需要耗时3s，但是因为三个线程都可以访问DOM和堆内存，很可能造成冲突，若要避免冲突就要设计锁🔒，这样会导致代码模型更加复杂，耗时必然大于3s；
+在异步的情况下，就涉及到&lt;strong&gt;事件循环&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;事件循环如何实现异步&#34;&gt;事件循环如何实现异步&lt;/h3&gt;
+&lt;p&gt;事件循环在浏览器和NodeJs中都是用于调度的，它决定了V8什么时候执行什么代码。&lt;strong&gt;V8只是负责JS代码的解析和执行，其他一概不知。&lt;/strong&gt; 浏览器或者NodeJS中触发事件之后，到事件的监听函数被V8执行这个时间段的所有工作都是事件循环在起作用。
+我们来小结一下：&lt;/p&gt;
+&lt;p&gt;对于V8来说，它有：
+调用栈（call stack）
+这里的单线程指的是只有一个call stack。只有一个call stack 意味着同一时间只能执行一段代码。&lt;/p&gt;
+&lt;p&gt;堆（heap）
+对于浏览器运行环境来说：
+WEB API
+DOM API
+任务队列
+事件来触发事件循环进行流动&lt;/p&gt;
+&lt;p&gt;事件循环之所以可以实现异步，就是将类似setTimeout等异步执行的代码注册/绑定的回调函数存起来，后面再将任务推入执行栈中。如图所示：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;setTimeout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;figure&gt;
+		&lt;a href=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack2.gif&#34; data-size=&#34;600x288&#34;&gt;
+			&lt;img srcset=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack2_huc97b38fc4f1df63885a6a7ed5c4f59de_128397_480x0_resize_box.gif 480w, https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack2_huc97b38fc4f1df63885a6a7ed5c4f59de_128397_1024x0_resize_box.gif 1024w&#34;
+				src=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/stack2.gif&#34; width=&#34;600&#34; height=&#34;288&#34; loading=&#34;lazy&#34;
+				alt=&#34;setTimeout&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;setTimeout&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;加入用户交互之后，可见示例：
+&lt;a href=&#34;http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D&#34;&gt;http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;setTimeout代码执行后会将回调函数放入Web API中，计时结束后注册的回调函数会插入Callback queue中，待到Call Stack为空即浏览器空闲的时候时排队插入Call Stack被执行。&lt;/p&gt;
+&lt;p&gt;加入&lt;strong&gt;宏任务&lt;/strong&gt;和&lt;strong&gt;微任务&lt;/strong&gt;，来看一个更复杂的例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-javascirpt&#34; data-lang=&#34;javascirpt&#34;&gt;console.log(1)
+
+setTimeout(() =&amp;gt; {
+  console.log(2)
+}, 0)
+
+Promise.resolve().then(() =&amp;gt; {
+	return console.log(3)
+}).then(() =&amp;gt; {
+	console.log(4)
+})
+
+console.log(5)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面的代码会输出：1、5、3、4、2。 如果你想要非常严谨的解释可以参考 whatwg 对其进行的描述 &lt;a class=&#34;link&#34; href=&#34;https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;cievent-loop-processing-model&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;下面我会对其进行一个简单的解释。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;浏览器首先执行宏任务，也就是我们script（仅仅执行一次）&lt;/li&gt;
+&lt;li&gt;完成之后检查是否存在微任务，然后不停执行，直到清空队列&lt;/li&gt;
+&lt;li&gt;执行宏任务
+其中：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;宏任务主要包含：setTimeout、setInterval、setImmediate、I/O、UI交互事件&lt;/p&gt;
+&lt;p&gt;微任务主要包含：Promise、process.nextTick、MutaionObserver 等&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+		&lt;a href=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/circle.jpg&#34; data-size=&#34;585x357&#34;&gt;
+			&lt;img srcset=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/circle_hu93859fa7e41e6c4fbcf69bdbf1b42942_16802_480x0_resize_q75_box.jpg 480w, https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/circle_hu93859fa7e41e6c4fbcf69bdbf1b42942_16802_1024x0_resize_q75_box.jpg 1024w&#34;
+				src=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/circle.jpg&#34; width=&#34;585&#34; height=&#34;357&#34; loading=&#34;lazy&#34;
+				alt=&#34;事件循环示意图&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;事件循环示意图&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;有了这个知识，我们不难得出上面代码的输出结果。&lt;/p&gt;
+&lt;p&gt;由此我们可以看出，宏任务&amp;amp;微任务只是实现异步过程中，我们对于信号的处理顺序不同而已。如果我们不加区分，全部放到一个队列，就不会有宏任务&amp;amp;微任务。这种人为划分优先级的过程，在某些时候非常有用。&lt;/p&gt;
+&lt;h3 id=&#34;加入执行上下文栈&#34;&gt;加入执行上下文栈&lt;/h3&gt;
+&lt;p&gt;说到执行上下文，就不得不提到浏览器执行JS函数其实是分两个过程的。一个是&lt;strong&gt;创建阶段Creation Phase&lt;/strong&gt;，一个是&lt;strong&gt;执行阶段Execution Phase&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;同执行栈一样，浏览器每遇到一个函数，也会将当前函数的执行上下文栈推入栈顶。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;num&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;num&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+		&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;num&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+			&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;
+			&lt;span class=&#34;nx&#34;&gt;console&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;num&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+		&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+		&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;num&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;num&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;遇到上面的代码。 首先会将a的压入执行栈，我们开始进行创建阶段Creation Phase， 将a的执行上下文压入栈。然后初始化a的执行上下文，分别是&lt;strong&gt;VO，ScopeChain（VO chain）和 This&lt;/strong&gt;。 从这里我们也可以看出，this其实是动态决定的。VO指的是&lt;strong&gt;variables, functions 和 arguments&lt;/strong&gt;。 并且执行上下文栈也会同步随着执行栈的销毁而销毁。&lt;/p&gt;
+&lt;p&gt;伪代码表示：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;EC&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;s1&#34;&gt;&amp;#39;scopeChain&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+    &lt;span class=&#34;s1&#34;&gt;&amp;#39;variableObject&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+    &lt;span class=&#34;s1&#34;&gt;&amp;#39;this&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;figure&gt;
+		&lt;a href=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/execution_context_stack.jpg&#34; data-size=&#34;809x432&#34;&gt;
+			&lt;img srcset=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/execution_context_stack_hu669dbe3834de674e993194e331472983_56039_480x0_resize_q75_box.jpg 480w, https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/execution_context_stack_hu669dbe3834de674e993194e331472983_56039_1024x0_resize_q75_box.jpg 1024w&#34;
+				src=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/execution_context_stack.jpg&#34; width=&#34;809&#34; height=&#34;432&#34; loading=&#34;lazy&#34;
+				alt=&#34;execution context stack&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;execution context stack&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;
+我们来重点看一下ScopeChain(VO chain)。如上图的执行上下文大概长这个样子，伪代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;
+&lt;span class=&#34;nx&#34;&gt;global&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;pointer&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt;
+    &lt;span class=&#34;nx&#34;&gt;scopeChain&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;global&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;pointer&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt;
+    &lt;span class=&#34;nx&#34;&gt;arguments&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+		&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+    &lt;span class=&#34;nx&#34;&gt;scopeChain&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;global&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;pointer&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;arguments&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+		&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;scopeChain&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;global&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;arguments&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+		&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;scopeChain&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;global&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;引擎查找变量的时候，会先从VOC开始找，找不到会继续去VOB…，直到GlobalVO，如果GlobalVO也找不到会返回&lt;strong&gt;Referrence Error&lt;/strong&gt;，整个过程类似原型链的查找。&lt;/p&gt;
+&lt;p&gt;值得一提的是，JS是词法作用域，也就是静态作用域。换句话说就是作用域取决于代码定义的位置，而不是执行的位置，这也就是&lt;strong&gt;闭包产生的本质原因&lt;/strong&gt;。 如果上面的代码改造成下面的：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;// 或者这种
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其执行上下文栈虽然都是一样的，但是其对应的scopeChain则完全不同，因为函数定义的位置发生了变化。拿上面的代码片段来说,c.VO会变成这样：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+	&lt;span class=&#34;nx&#34;&gt;scopeChain&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;global&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;也就是说其再也无法获取到a和b中的VO了。
+一图总结本文如下：
+&lt;figure&gt;
+		&lt;a href=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/v8_engine.jpg&#34; data-size=&#34;752x919&#34;&gt;
+			&lt;img srcset=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/v8_engine_hu34876f429b8d321b95f1f7cfd637ee6d_41474_480x0_resize_q75_box.jpg 480w, https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/v8_engine_hu34876f429b8d321b95f1f7cfd637ee6d_41474_1024x0_resize_q75_box.jpg 1024w&#34;
+				src=&#34;https://observerzq.github.io/ObzerverZQ.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%B8%80%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/v8_engine.jpg&#34; width=&#34;752&#34; height=&#34;919&#34; loading=&#34;lazy&#34;
+				alt=&#34;v8_engine.jpg&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;v8_engine.jpg&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;参考资料：
+&lt;a class=&#34;link&#34; href=&#34;https://lucifer.ren/blog/2019/12/11/event-loop/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;《一文看懂浏览器事件循环》&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Vue Router 4.0特性简介</title>
         <link>https://observerzq.github.io/ObzerverZQ.github.io/p/vue-router-4.0%E7%89%B9%E6%80%A7%E7%AE%80%E4%BB%8B/</link>
         <pubDate>Sun, 13 Dec 2020 19:23:26 +0800</pubDate>
