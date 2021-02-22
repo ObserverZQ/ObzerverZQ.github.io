@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>网络 on Observer的小家</title>
+    <link>https://observerzq.github.io/ObzerverZQ.github.io/tags/%E7%BD%91%E7%BB%9C/</link>
+    <description>Recent content in 网络 on Observer的小家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 12 Jan 2021 12:20:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>前端知识汇总（二）：网络</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%BA%8C%E7%BD%91%E7%BB%9C/</link>
+      <pubDate>Tue, 12 Jan 2021 12:20:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%BA%8C%E7%BD%91%E7%BB%9C/</guid>
+      <description>WebSocket 工作在七层（或者四层）中的哪一层？和 HTTP 是什么关系？ 是基于 UDP 的还是 TCP 的？ TCP 为什么是三次握手？为什么是四次挥手？ CDN 的工作原理是什么？ 运营商劫持是什么？如何防范？ HTTPS 一定是安全的么？如果不是，那么在什么情况下是不安全的？ 如何劫持 HTTPS 请求。 比如你需要抓 HTTPS 的包，怎么做？ 支付宝和微信的离线支付是怎么做的？ Token 和 Cookie 有什么区别和联系呢？其分别是为了解决什么样的事情？ WebSocket 需要 cookie 么？为什么？ WebSocket 是怎么实现点对点通信和广播通信的？ 如果访问你的 APP 很慢，你自己无法重现。 初步定位到网络问题， 那么你怎么能具体定位到问题呢？ traceroute, Ping 的原理是什么？ 192.168.0.1 和 192.168.1.1 如何通信？ DNS 是如何泄漏个人隐私的？怎么防范？ 从网络协议模型（七层 or 四层）的角度分析一下，浏览器访问 192.168.3.4:8088 的具体过程。</description>
+    </item>
+    
+  </channel>
+</rss>
