@@ -197,7 +197,7 @@ npm 是与 Node.js 自带的默认包管理器，它有一个大型的公共库�
         <pubDate>Tue, 12 Jan 2021 12:20:26 +0800</pubDate>
         
         <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%BA%8C%E7%BD%91%E7%BB%9C/</guid>
-        <description>&lt;img src="https://observerzq.github.io/ObzerverZQ.github.io/cover.jpg" alt="Featured image of post 前端知识汇总（二）：网络" /&gt;&lt;p&gt;WebSocket 工作在七层（或者四层）中的哪一层？和 HTTP 是什么关系？ 是基于 UDP 的还是 TCP 的？
+        <description>&lt;img src="https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E4%BA%8C%E7%BD%91%E7%BB%9C/cover.jpg" alt="Featured image of post 前端知识汇总（二）：网络" /&gt;&lt;p&gt;WebSocket 工作在七层（或者四层）中的哪一层？和 HTTP 是什么关系？ 是基于 UDP 的还是 TCP 的？
 TCP 为什么是三次握手？为什么是四次挥手？
 CDN 的工作原理是什么？
 运营商劫持是什么？如何防范？
