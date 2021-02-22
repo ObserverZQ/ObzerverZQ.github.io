@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Node.js on Observer的小家</title>
+    <link>https://observerzq.github.io/ObzerverZQ.github.io/tags/node.js/</link>
+    <description>Recent content in Node.js on Observer的小家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 22 Feb 2021 19:23:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/tags/node.js/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Node.js 常见问题15条</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/node.js-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%9815%E6%9D%A1/</link>
+      <pubDate>Mon, 22 Feb 2021 19:23:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/node.js-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%9815%E6%9D%A1/</guid>
+      <description>临阵磨枪，不快也光。对于成功的编程面试来说，准备和知识面一样重要。准备使你有信心参加面试，而不用担心莫名的紧张情绪。如果第一次参加编程面试，这一点尤其重要。
+为帮助 Node.js 开发人员更好的面试，我列出了 15 个常见的 Node.js 和网络开发相关的面试问题。
+在本文中，我们将重点讨论 Node.js 相关问题。但是，请记住 JavaScript 问题在 Node.js 面试中也经常问到，所以准备一些对你来说没什么坏处。不久前我们写了一篇关于常见 JavaScript 面试问题的帖子，涵盖了所有这些基础。
+https://livecodestream.dev/post/20-common-javascript-interview-questions/
+现在，让我们深入了解面试中可能会问到的 Node.js 问题。
+ Node.js 与 JavaScript 有什么不同?    Image 
+什么时候用 Node.js？ Node.js 是异步的、事件驱动的、非阻塞的和单线程的，使得它成为开发下面应用程序的完美候选：    实时应用程序，如聊天和提供实时更新的应用程序
+  将视频或其他多媒体内容流式传输给大量观众的流式应用程序
+  其他 I/O 密集型应用程序，如协作平台
+  遵循微服务架构的网络后端
+  然而，Node.js 的特性使得它对于其他类型的应用程序来说不是一个理想的选择。执行 CPU 密集型任务的应用程序（如复杂的数学计算）在使用 CPU 时表现不佳，因为 Node.js 是单线程的。
+EventEmitter 做了什么？ Node.js 中任何对象发出的事件都是 EventEmitter 类的实例，就像 http 模块。  所有 EventEmitter 类都可以使用 eventEmitter.</description>
+    </item>
+    
+  </channel>
+</rss>
