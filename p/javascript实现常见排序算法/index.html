@@ -229,11 +229,8 @@
     <span class="kd">let</span> <span class="nx">isSorted</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
     <span class="kd">let</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">len</span> <span class="o">-</span> <span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span> <span class="o">+</span><span class="mi">1</span> <span class="p">])</span> <span class="p">{</span>
-                <span class="p">[</span><span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">],</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">array</span><span class="p">[</span><span class="nx">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">]];</span>
-                <span class="nx">isSorted</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-            <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="err">（</span><span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">len</span> <span class="o">-</span> <span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span><span class="err">）</span> <span class="o">&amp;&amp;</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">[</span><span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">],</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">array</span><span class="p">[</span><span class="nx">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">]];</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">isSorted</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">break</span><span class="p">;</span>
@@ -241,8 +238,8 @@
     <span class="p">}</span>
     <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>
 <span class="p">}</span>
-
-</code></pre></div><h3 id="选择排序">选择排序</h3>
+</code></pre></div><p>时间复杂度上，最好情况是O(n)，即数组已经完全排好序，后一个元素永远比前一个元素大，不需要冒泡，只需要遍历一次，平均和最坏情况是O(n2)。</p>
+<h3 id="选择排序">选择排序</h3>
 <p>基本思路：从左至右遍历数组，比较一圈后得到最小值的索引，与索引0的元素交换位置；接着从第2位开始循环上述操作，将第二小的元素放在索引为1的位置，以此类推。每次遍历的时间为O(n)，这样的时间复杂度为O(n2)。</p>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">selectionSort</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
@@ -256,7 +253,23 @@
     <span class="p">}</span>
     <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre></div><h3 id="插入排序">插入排序</h3>
+</code></pre></div><p>时间复杂度上，最好、平均、最坏情况都是O(n2)。</p>
+<h3 id="插入排序">插入排序</h3>
+<p>基本思路：从左至右遍历，新元素通过与左边已经排好序的数组逐一比对，插入至左边的数组中，将比遍历到的元素大的元素统统右移一位。</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">insertionSort</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="kr">const</span> <span class="nx">temp</span> <span class="o">=</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nx">j</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">temp</span> <span class="o">&lt;</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+            <span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+            <span class="nx">j</span><span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">temp</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>时间复杂度上，最好情况为O(n)，即数组已经完全排好序，平均和最坏情况为O(n2)。</p>
+<p>下面进入到时间复杂度降低了的快速排序和归并排序。</p>
 <h3 id="快速排序quicksort">快速排序quicksort</h3>
 <h4 id="法一">法一</h4>
 <p>基本思路：选择一个基准值（随意选择），遍历数组（除基准值以外），将比基准值小的push到一个数组，放到基准值左侧，将比基准值大的push到另一个数组，放到基准值右侧，并对新的两个数组继续递归调用该函数，即为该函数的返回结果。基线条件为入参数组的长度为1，结束递归，直接返回该数组。递归过程逐个栈完成调用返回结果。</p>
@@ -277,7 +290,7 @@
     <span class="k">return</span> <span class="nx">quickSort</span><span class="p">(</span><span class="nx">low</span><span class="p">).</span><span class="nx">concat</span><span class="p">(</span><span class="nx">pivot</span><span class="p">,</span> <span class="nx">quickSort</span><span class="p">(</span><span class="nx">high</span><span class="p">));</span>
 <span class="p">}</span>
 </code></pre></div><p>每层实际还是遍历了O(n)个元素，而调用栈共有O(log n)层（相当于二分，所以是2的对数），所以平均情况的时间复杂度为O(n) * O(log n) = O(nlogn)。
-最糟情况下，例如一个已经排好序的数组，基准值从第一个元素取，则调用栈为n层，此时时间复杂度为O(n2)。但是一般都不会遇到最糟情况。</p>
+最糟情况下，例如一个已经排好序的数组，基准值从第一个元素取，则右边分出来的数组拆分为原长度减1的数组，所以调用栈为n层，此时时间复杂度为O(n2)。但是一般都不会遇到最糟情况。</p>
 <h4 id="法二">法二</h4>
 <p>实现分析：</p>
 <p>将当前数组分区
@@ -326,7 +339,8 @@
 
   <span class="k">return</span> <span class="nx">quick</span><span class="p">(</span><span class="nx">unsorted</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">unsorted</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div><h3 id="合并排序mergesort">合并排序mergesort</h3>
+</code></pre></div><p>时间复杂度上，最好、平均复杂度是O(nlogn)，最坏情况是O(n2)</p>
+<h3 id="合并排序mergesort">合并排序mergesort</h3>
 <p>基本思路：取位于数组中间的值，将左侧右侧各生成一个新数组（split），然后调用merge函数，各用一个索引进行逐个遍历比较，将较小的推送至结果数组中，直至其中一个数组遍历结束，对有剩余元素的那个数组在尾部加至结果数组。对新数组递归拆分操作，并调用该merge函数，直至左右数组的长度为0。</p>
 <p>将数组从中间切分为两个数组
 切分到最小之后，开始归并操作，即合并两个已排序的数组
@@ -361,7 +375,7 @@
     <span class="p">}</span>
     <span class="k">return</span> <span class="nx">split</span><span class="p">(</span><span class="nx">array</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div><p>归并排序的时间复杂度是 O(nlog(n))，是实际工程中可选的排序方案。</p>
+</code></pre></div><p>时间复杂度上，最好、平均和最坏情况都是 O(nlog(n))。</p>
 <h3 id="对比归并排序与快速排序">对比归并排序与快速排序</h3>
 <ol>
 <li>都用了分治的思想。相比选择排序和冒泡排序，归并排序与快速排序使用了切分而不是直接遍历，这有效减少了交换次数。</li>
