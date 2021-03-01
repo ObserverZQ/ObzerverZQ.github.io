@@ -8,16 +8,13 @@
     <language>en-us</language>
     <lastBuildDate>Fri, 26 Feb 2021 19:11:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Node.js 常见问题15条</title>
-      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/node.js-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%9815%E6%9D%A1/</link>
+      <title>JavaScript实现常见排序算法</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/javascript%E5%AE%9E%E7%8E%B0%E5%B8%B8%E8%A7%81%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</link>
       <pubDate>Fri, 26 Feb 2021 19:11:26 +0800</pubDate>
       
-      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/node.js-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%9815%E6%9D%A1/</guid>
-      <description>快速排序quicksort 法一 基本思路：选择一个基准值（随意选择），遍历数组（除基准值以外），将比基准值小的push到一个数组，放到基准值左侧，将比基准值大的push到另一个数组，放到基准值右侧，并对新的两个数组继续递归调用该函数，即为该函数的返回结果。基线条件为入参数组的长度为1，结束递归，直接返回该数组。递归过程逐个栈完成调用返回结果。
-function quickSort(array) { if (array.length &amp;lt; 2) { return array; } let pivot = array[0]; let low = []; let high = []; for (let i = 1; i &amp;lt; array.length; i++) { if (array[i] &amp;lt;= pivot) { low.push(array[i]); } else { high.push(array[i]); } } return quickSort(low).concat(pivot, quickSort(high)); } 每层实际还是遍历了O(n)个元素，而调用栈共有O(log n)层（相当于二分，所以是2的对数），所以平均情况的时间复杂度为O(n) * O(log n) = O(nlogn)。 最糟情况下，例如一个已经排好序的数组，基准值从第一个元素取，则调用栈为n层，此时时间复杂度为O(n2)。但是一般都不会遇到最糟情况。
-法二 实现分析：
-将当前数组分区 分区时先选择一个基准值，再创建两个指针，左边一个指向数组第一个项，右边一个指向数组最后一个项。移动左指针直至找到一个比基准值大的元素，再移动右指针直至找到一个比基准值小的元素，然后交换它们，重复这个过程，直到左指针的位置超过了右指针。如此分区、交换使得比基准值小的元素都在基准值之前，比基准值大的元素都在基准值之后，这就是分区（partition）操作。 对于上一次分区后的两个区域重复进行分区、交换操作，直至分区到最小。
-function quickSort(unsorted) { function partition(array, left, right) { const pivot = array[ Math.</description>
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/javascript%E5%AE%9E%E7%8E%B0%E5%B8%B8%E8%A7%81%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</guid>
+      <description>冒泡排序 基本思路：从左至右遍历数组，取一个指针指向第一个元素，与下一个元素比较，若该元素更大则前后交换位置，然后指针取下一位，与后一位进行比较，继续这样的循环，这样一轮下来会使得最大值放在数组的末尾，类似吐泡泡一样。之后重新开始循环上述过程，将第二大的元素放在倒数第二位。
+function bubbleSort(array) { let isSorted = true; let len = array.length; for (let i = 0; i &amp;lt; len; i ++) { for (let j = 0; j &amp;lt; len - i - 1; j++) { if (array[j] &amp;gt; array[j +1 ]) { [array[j], array[j + 1]] = [array[j + 1], array[j]]; isSorted = false; } } if (isSorted) { break; } } return array; } 选择排序 基本思路：从左至右遍历数组，比较一圈后得到最小值的索引，与索引0的元素交换位置；接着从第2位开始循环上述操作，将第二小的元素放在索引为1的位置，以此类推。每次遍历的时间为O(n)，这样的时间复杂度为O(n2)。</description>
     </item>
     
   </channel>
