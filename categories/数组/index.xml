@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数组 on Observer的小家</title>
+    <link>https://observerzq.github.io/ObzerverZQ.github.io/categories/%E6%95%B0%E7%BB%84/</link>
+    <description>Recent content in 数组 on Observer的小家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 26 Feb 2021 19:11:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/categories/%E6%95%B0%E7%BB%84/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Node.js 常见问题15条</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/node.js-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%9815%E6%9D%A1/</link>
+      <pubDate>Fri, 26 Feb 2021 19:11:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/node.js-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%9815%E6%9D%A1/</guid>
+      <description>快速排序quicksort 法一 基本思路：选择一个基准值（随意选择），遍历数组（除基准值以外），将比基准值小的push到一个数组，放到基准值左侧，将比基准值大的push到另一个数组，放到基准值右侧，并对新的两个数组继续递归调用该函数，即为该函数的返回结果。基线条件为入参数组的长度为1，结束递归，直接返回该数组。递归过程逐个栈完成调用返回结果。
+function quickSort(array) { if (array.length &amp;lt; 2) { return array; } let pivot = array[0]; let low = []; let high = []; for (let i = 1; i &amp;lt; array.length; i++) { if (array[i] &amp;lt;= pivot) { low.push(array[i]); } else { high.push(array[i]); } } return quickSort(low).concat(pivot, quickSort(high)); } 每层实际还是遍历了O(n)个元素，而调用栈共有O(log n)层（相当于二分，所以是2的对数），所以平均情况的时间复杂度为O(n) * O(log n) = O(nlogn)。 最糟情况下，例如一个已经排好序的数组，基准值从第一个元素取，则调用栈为n层，此时时间复杂度为O(n2)。但是一般都不会遇到最糟情况。
+法二 实现分析：
+将当前数组分区 分区时先选择一个基准值，再创建两个指针，左边一个指向数组第一个项，右边一个指向数组最后一个项。移动左指针直至找到一个比基准值大的元素，再移动右指针直至找到一个比基准值小的元素，然后交换它们，重复这个过程，直到左指针的位置超过了右指针。如此分区、交换使得比基准值小的元素都在基准值之前，比基准值大的元素都在基准值之后，这就是分区（partition）操作。 对于上一次分区后的两个区域重复进行分区、交换操作，直至分区到最小。
+function quickSort(unsorted) { function partition(array, left, right) { const pivot = array[ Math.</description>
+    </item>
+    
+  </channel>
+</rss>
