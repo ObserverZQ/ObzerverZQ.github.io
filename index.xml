@@ -6,7 +6,166 @@
         <description>Recent content on Observer的小家</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Fri, 26 Feb 2021 19:11:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Mar 2021 10:14:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>flex布局</title>
+        <link>https://observerzq.github.io/ObzerverZQ.github.io/p/flex%E5%B8%83%E5%B1%80/</link>
+        <pubDate>Tue, 09 Mar 2021 10:14:26 +0800</pubDate>
+        
+        <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/flex%E5%B8%83%E5%B1%80/</guid>
+        <description>&lt;img src="https://observerzq.github.io/ObzerverZQ.github.io/p/flex%E5%B8%83%E5%B1%80/cover.jpg" alt="Featured image of post flex布局" /&gt;&lt;p&gt;flex: flex-grow flex-shrink flex-basis
+flex-grow 属性定义项目的放大比例，默认值为0，不放大，x为放大x倍
+flex-shrink 属性定义了项目的缩小比例，默认值为1，空间不足即缩小，0是不缩小
+flex-basis 定义了在分配多余空间之前，项目占据的主轴空间（main size）。默认值为auto，项目默认的大小&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;语法&lt;/th&gt;
+&lt;th&gt;等于&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;th&gt;备注&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;flex: initial&lt;/td&gt;
+&lt;td&gt;flex: 0 1 auto&lt;/td&gt;
+&lt;td&gt;容器默认不放大，尺寸不足会缩小，尺寸自适应内容&lt;/td&gt;
+&lt;td&gt;初始值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;flex: 0&lt;/td&gt;
+&lt;td&gt;flex: 0 1 0%&lt;/td&gt;
+&lt;td&gt;默认放大，尺寸不足会缩小，大小支持0，即最小的内容尺寸&lt;/td&gt;
+&lt;td&gt;场景少&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;flex: none&lt;/td&gt;
+&lt;td&gt;flex: 0 0 auto&lt;/td&gt;
+&lt;td&gt;默认不放大，尺寸不足也不缩小，子项的尺寸就是父级的尺寸时使用&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;flex: 1&lt;/td&gt;
+&lt;td&gt;flex: 1 1 0%&lt;/td&gt;
+&lt;td&gt;可以弹性变大，也可以弹性缩小，尺寸不足时优先最小化内容&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;flex: auto&lt;/td&gt;
+&lt;td&gt;flex: 1 1 auto&lt;/td&gt;
+&lt;td&gt;可以弹性变大，也可以弹性缩小，尺寸不足时优先最大化内容&lt;/td&gt;
+&lt;td&gt;基于内容动态匹配&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;参考资料：&lt;br&gt;
+&lt;a class=&#34;link&#34; href=&#34;http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Flex 布局教程：语法篇&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Web UI 自动化测试实践</title>
+        <link>https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/</link>
+        <pubDate>Tue, 09 Mar 2021 10:14:26 +0800</pubDate>
+        
+        <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/</guid>
+        <description>&lt;img src="https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/cover.jpg" alt="Featured image of post Web UI 自动化测试实践" /&gt;&lt;p&gt;Vue的缺点：
+全局的this
+Vue 2 html、data声明、涉及方法代码片段分散，可复用性差&lt;/p&gt;
+&lt;p&gt;今日份吐血：
+需要重复复制相同逻辑代码，功能代码分散
+另一个页面需要使用，则需要复制相应的type action enum，&lt;/p&gt;
+&lt;h3 id=&#34;上下文丢失&#34;&gt;上下文丢失&lt;/h3&gt;
+&lt;p&gt;Vue 的单文件组件，使用 &lt;!-- raw HTML omitted --&gt; 、&lt;!-- raw HTML omitted --&gt; 对代码进行分割，直接导致的问题就是上下文丢失。 举个例子，你封装了一些常用的函数，在 Vue 文件中 import 进来。你这个函数能在 template 中直接使用吗？ 不能。
+需要在data或者method中中再次声明。
+或者用namespace直接定义好action mutation&lt;/p&gt;
+&lt;h3 id=&#34;模板分割&#34;&gt;模板分割&lt;/h3&gt;
+&lt;p&gt;好的代码组织能将常变与不变的部分进行分割解耦&lt;/p&gt;
+&lt;p&gt;Vue 的模板严重限制了这一点。 举个例子，前端有个下拉菜单，功能不断增加，而且对于不同的人要显示不同菜单（权限管理）。在 Vue 中，为了实现 html 代码（绑定在 template 中）的分割，你只能再搞一个组件。在 React 中，可以直接这样写：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;menu&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;div&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;abc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;div&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可单独做一个组件（低开销函数组件），也可当做变量，放在当前代码中。相对灵活很多。
+SX 手写 render 渲染函数自带下面的优势&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;完整的 js 功能来构建视图页面，可以使用临时变量、js 自带的控制流、以及直接引用当前 js 作用域中的值&lt;/li&gt;
+&lt;li&gt;开发工具对 jsx 的支持比现有 vue 模板先进（linting、typescript、编译器自动补全）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;参考资料：&lt;br&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://markdowner.net/article/79319258450055168&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;为什么我们放弃了 Vue？Vue 和 React 深度对比&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Web UI 自动化测试实践</title>
+        <link>https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/</link>
+        <pubDate>Mon, 08 Mar 2021 10:54:26 +0800</pubDate>
+        
+        <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/</guid>
+        <description>&lt;img src="https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/cover.jpg" alt="Featured image of post Web UI 自动化测试实践" /&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/SeleniumHQ/selenium&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Selenium&lt;/a&gt;：可以直接在浏览器中运行，目前使用版本v3，最高版本v4（不稳定）
+安装、运行：http://www.testclass.net/selenium_python/install-selenium
+可能遇到浏览器驱动问题，https://blog.csdn.net/tymatlab/article/details/78649727  &lt;a href=&#34;http://www.testclass.net/selenium_python/selenium3-browser-driver&#34;&gt;http://www.testclass.net/selenium_python/selenium3-browser-driver&lt;/a&gt;
+chrome驱动下载地址：https://sites.google.com/a/chromium.org/chromedriver/home&lt;/p&gt;
+&lt;p&gt;元素定位：http://www.testclass.net/selenium_python/find-element
+对项目元素设置不同的classsname、css选择器，即可通过以下方法获取到该元素&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;n&#34;&gt;dr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;find_element_by_class_name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;s_ipt&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;dr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;find_element_by_css_selector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;#kw&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;dr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;find_element_by_css_selector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;[name=wd]&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;dr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;find_element_by_css_selector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;.s_ipt&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;dr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;find_element_by_css_selector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;html &amp;gt; body &amp;gt; form &amp;gt; span &amp;gt; input&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;dr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;find_element_by_css_selector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;span.soutu-btn&amp;gt; input#kw&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;dr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;find_element_by_css_selector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;form#form &amp;gt; span &amp;gt; input&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;控制浏览器操作：
+&lt;a href=&#34;http://www.testclass.net/selenium_python/control-browser&#34;&gt;http://www.testclass.net/selenium_python/control-browser&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;其余操作：包括鼠标事件、键盘事件、窗口切换、文件上传、关闭浏览器等
+&lt;a href=&#34;http://www.testclass.net/selenium_python&#34;&gt;http://www.testclass.net/selenium_python&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;cd ~ // 进入根目录
+vim .bash_profile // 创建或者打开该文件&lt;/p&gt;
+&lt;p&gt;// .bash_profile以及.bashrc以及.zshrc均输入以下内容
+export M2_HOME=/Users/mtdp/project/apache-maven-3.6.3  // /Users/mtdp/project/apache-maven-3.6.3 这个路径是自己存放maven的路径
+export M2=$M2_HOME/bin // 不动
+export PATH=$M2:$PATH  // 不动
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_192.jdk/Contents/Home   // 一般情况下只需要修改jdk版本号就好了，和自己安装的版本号一致，安装mvn和jdk后可以通过mvn -v查询到路径&lt;/p&gt;
+&lt;p&gt;// 保存后使用source命令
+source .bash_profile/.bashrc/.zshrc&lt;/p&gt;
+&lt;p&gt;// java环境配置完成&lt;/p&gt;
+&lt;p&gt;// 修改maven的setting文件。进入maven安装目录打开conf下面的settings文件&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在自己的目录下新建java包存放文件夹，如maven_repostory，我的路径为/Users/mtdp/project/maven_repostory&lt;/li&gt;
+&lt;li&gt;打开settings.xml文件，修改localRepository路径&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;/Users/mtdp/project/maven_repostory&lt;!-- raw HTML omitted --&gt;   // 改成自己的路径
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;meituan-nexus-releases&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;deployment&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;deployment123&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&amp;hellip;
+// 安装python，由于mac本来自带python2，但是如果使用不当可能会引起mac系统崩溃，因此我们使用python3
+brew install python3 // 安装python3，如果没有安装brew，使用/bin/bash -c &amp;ldquo;$(curl -fsSL &lt;a href=&#34;https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)%22&#34;&gt;https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&amp;quot;&lt;/a&gt;安装HOMEbrew
+pip3 -V // 查看pip是否安装成功
+pip3 install selenium // 使用piip安装selenium
+brew install chromedriver
+chromedriver &amp;ndash;version // 查看版本
+// 我试着直接下载安装包过，但是path总是找不到，运行代码问题频频出现，因此选择命令安装
+// 另外安装后一开始不生效的话，建议重开一个终端运行即可&lt;/p&gt;
+&lt;p&gt;// 下载仓库代码
+git clone ssh://git@git.sankuai.com/qa/case-uiauto.git&lt;/p&gt;
+&lt;p&gt;// java运行，进入仓库代码中存放pom.xml层级的目录
+mvn test -DxmlFileName=testng.xml&lt;/p&gt;
+&lt;p&gt;// 默认用的是test环境，
+// 如果用本地分支跑，可以把testng.xml中detailUrl修改成localhost:8421/case/product/detail/1295217958986731508?fromRoute=createdCase&amp;amp;pageSize=10&amp;amp;keyword=UI%E8%87%AA%E5%8A%A8%E5%8C%96&amp;amp;offset=2&lt;/p&gt;
+&lt;p&gt;测试场景梳理：
+UI自动化Demo运行需要搭建如下环境：jdk 1.8 + maven + Selenium WebDriver（Selenium 3）
+参考资料：&lt;br&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/tymatlab/article/details/78649727&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Mac “&amp;lsquo;chromedriver&amp;rsquo; executable needs to be in PATH”&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>JavaScript实现常见排序算法</title>
         <link>https://observerzq.github.io/ObzerverZQ.github.io/p/javascript%E5%AE%9E%E7%8E%B0%E5%B8%B8%E8%A7%81%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</link>
         <pubDate>Fri, 26 Feb 2021 19:11:26 +0800</pubDate>
@@ -1253,6 +1412,14 @@ console.log(5)
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/section&gt;</description>
+        </item>
+        <item>
+        <title></title>
+        <link>https://observerzq.github.io/ObzerverZQ.github.io/p/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/</guid>
+        <description></description>
         </item>
         
     </channel>

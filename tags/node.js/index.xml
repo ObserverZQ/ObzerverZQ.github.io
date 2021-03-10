@@ -6,7 +6,25 @@
     <description>Recent content in Node.js on Observer的小家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 22 Feb 2021 19:23:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/tags/node.js/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 08 Mar 2021 10:54:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/tags/node.js/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Web UI 自动化测试实践</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Mon, 08 Mar 2021 10:54:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/</guid>
+      <description>Selenium：可以直接在浏览器中运行，目前使用版本v3，最高版本v4（不稳定） 安装、运行：http://www.testclass.net/selenium_python/install-selenium 可能遇到浏览器驱动问题，https://blog.csdn.net/tymatlab/article/details/78649727 http://www.testclass.net/selenium_python/selenium3-browser-driver chrome驱动下载地址：https://sites.google.com/a/chromium.org/chromedriver/home
+元素定位：http://www.testclass.net/selenium_python/find-element 对项目元素设置不同的classsname、css选择器，即可通过以下方法获取到该元素
+dr.find_element_by_class_name(&amp;#34;s_ipt&amp;#34;) dr.find_element_by_css_selector(&amp;#34;#kw&amp;#34;) dr.find_element_by_css_selector(&amp;#34;[name=wd]&amp;#34;) dr.find_element_by_css_selector(&amp;#34;.s_ipt&amp;#34;) dr.find_element_by_css_selector(&amp;#34;html &amp;gt; body &amp;gt; form &amp;gt; span &amp;gt; input&amp;#34;) dr.find_element_by_css_selector(&amp;#34;span.soutu-btn&amp;gt; input#kw&amp;#34;) dr.find_element_by_css_selector(&amp;#34;form#form &amp;gt; span &amp;gt; input&amp;#34;) 控制浏览器操作： http://www.testclass.net/selenium_python/control-browser
+其余操作：包括鼠标事件、键盘事件、窗口切换、文件上传、关闭浏览器等 http://www.testclass.net/selenium_python
+cd ~ // 进入根目录 vim .bash_profile // 创建或者打开该文件
+// .bash_profile以及.bashrc以及.zshrc均输入以下内容 export M2_HOME=/Users/mtdp/project/apache-maven-3.6.3 // /Users/mtdp/project/apache-maven-3.6.3 这个路径是自己存放maven的路径 export M2=$M2_HOME/bin // 不动 export PATH=$M2:$PATH // 不动 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_192.jdk/Contents/Home // 一般情况下只需要修改jdk版本号就好了，和自己安装的版本号一致，安装mvn和jdk后可以通过mvn -v查询到路径
+// 保存后使用source命令 source .bash_profile/.bashrc/.zshrc
+// java环境配置完成
+// 修改maven的setting文件。进入maven安装目录打开conf下面的settings文件
+ 在自己的目录下新建java包存放文件夹，如maven_repostory，我的路径为/Users/mtdp/project/maven_repostory 打开settings.xml文件，修改localRepository路径  /Users/mtdp/project/maven_repostory// 改成自己的路径 meituan-nexus-releasesdeploymentdeployment123&amp;hellip; // 安装python，由于mac本来自带python2，但是如果使用不当可能会引起mac系统崩溃，因此我们使用python3 brew install python3 // 安装python3，如果没有安装brew，使用/bin/bash -c &amp;ldquo;$(curl -fsSL https://raw.</description>
+    </item>
+    
     <item>
       <title>Node.js 常见问题15条</title>
       <link>https://observerzq.github.io/ObzerverZQ.github.io/p/node.js-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%9815%E6%9D%A1/</link>

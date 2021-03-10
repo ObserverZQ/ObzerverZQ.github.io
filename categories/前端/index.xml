@@ -6,7 +6,51 @@
     <description>Recent content in 前端 on Observer的小家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 22 Feb 2021 19:23:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/categories/%E5%89%8D%E7%AB%AF/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 09 Mar 2021 10:14:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/categories/%E5%89%8D%E7%AB%AF/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>flex布局</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/flex%E5%B8%83%E5%B1%80/</link>
+      <pubDate>Tue, 09 Mar 2021 10:14:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/flex%E5%B8%83%E5%B1%80/</guid>
+      <description>flex: flex-grow flex-shrink flex-basis flex-grow 属性定义项目的放大比例，默认值为0，不放大，x为放大x倍 flex-shrink 属性定义了项目的缩小比例，默认值为1，空间不足即缩小，0是不缩小 flex-basis 定义了在分配多余空间之前，项目占据的主轴空间（main size）。默认值为auto，项目默认的大小
+   语法 等于 描述 备注     flex: initial flex: 0 1 auto 容器默认不放大，尺寸不足会缩小，尺寸自适应内容 初始值   flex: 0 flex: 0 1 0% 默认放大，尺寸不足会缩小，大小支持0，即最小的内容尺寸 场景少   flex: none flex: 0 0 auto 默认不放大，尺寸不足也不缩小，子项的尺寸就是父级的尺寸时使用    flex: 1 flex: 1 1 0% 可以弹性变大，也可以弹性缩小，尺寸不足时优先最小化内容    flex: auto flex: 1 1 auto 可以弹性变大，也可以弹性缩小，尺寸不足时优先最大化内容 基于内容动态匹配    参考资料：</description>
+    </item>
+    
+    <item>
+      <title>Web UI 自动化测试实践</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Tue, 09 Mar 2021 10:14:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/</guid>
+      <description>Vue的缺点： 全局的this Vue 2 html、data声明、涉及方法代码片段分散，可复用性差
+今日份吐血： 需要重复复制相同逻辑代码，功能代码分散 另一个页面需要使用，则需要复制相应的type action enum，
+上下文丢失 Vue 的单文件组件，使用 、对代码进行分割，直接导致的问题就是上下文丢失。 举个例子，你封装了一些常用的函数，在 Vue 文件中 import 进来。你这个函数能在 template 中直接使用吗？ 不能。 需要在data或者method中中再次声明。 或者用namespace直接定义好action mutation
+模板分割 好的代码组织能将常变与不变的部分进行分割解耦
+Vue 的模板严重限制了这一点。 举个例子，前端有个下拉菜单，功能不断增加，而且对于不同的人要显示不同菜单（权限管理）。在 Vue 中，为了实现 html 代码（绑定在 template 中）的分割，你只能再搞一个组件。在 React 中，可以直接这样写：
+const menu = &amp;lt;div&amp;gt;abc&amp;lt;div&amp;gt;; 可单独做一个组件（低开销函数组件），也可当做变量，放在当前代码中。相对灵活很多。 SX 手写 render 渲染函数自带下面的优势
+ 完整的 js 功能来构建视图页面，可以使用临时变量、js 自带的控制流、以及直接引用当前 js 作用域中的值 开发工具对 jsx 的支持比现有 vue 模板先进（linting、typescript、编译器自动补全）  参考资料：
+为什么我们放弃了 Vue？Vue 和 React 深度对比</description>
+    </item>
+    
+    <item>
+      <title>Web UI 自动化测试实践</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Mon, 08 Mar 2021 10:54:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/web-ui-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/</guid>
+      <description>Selenium：可以直接在浏览器中运行，目前使用版本v3，最高版本v4（不稳定） 安装、运行：http://www.testclass.net/selenium_python/install-selenium 可能遇到浏览器驱动问题，https://blog.csdn.net/tymatlab/article/details/78649727 http://www.testclass.net/selenium_python/selenium3-browser-driver chrome驱动下载地址：https://sites.google.com/a/chromium.org/chromedriver/home
+元素定位：http://www.testclass.net/selenium_python/find-element 对项目元素设置不同的classsname、css选择器，即可通过以下方法获取到该元素
+dr.find_element_by_class_name(&amp;#34;s_ipt&amp;#34;) dr.find_element_by_css_selector(&amp;#34;#kw&amp;#34;) dr.find_element_by_css_selector(&amp;#34;[name=wd]&amp;#34;) dr.find_element_by_css_selector(&amp;#34;.s_ipt&amp;#34;) dr.find_element_by_css_selector(&amp;#34;html &amp;gt; body &amp;gt; form &amp;gt; span &amp;gt; input&amp;#34;) dr.find_element_by_css_selector(&amp;#34;span.soutu-btn&amp;gt; input#kw&amp;#34;) dr.find_element_by_css_selector(&amp;#34;form#form &amp;gt; span &amp;gt; input&amp;#34;) 控制浏览器操作： http://www.testclass.net/selenium_python/control-browser
+其余操作：包括鼠标事件、键盘事件、窗口切换、文件上传、关闭浏览器等 http://www.testclass.net/selenium_python
+cd ~ // 进入根目录 vim .bash_profile // 创建或者打开该文件
+// .bash_profile以及.bashrc以及.zshrc均输入以下内容 export M2_HOME=/Users/mtdp/project/apache-maven-3.6.3 // /Users/mtdp/project/apache-maven-3.6.3 这个路径是自己存放maven的路径 export M2=$M2_HOME/bin // 不动 export PATH=$M2:$PATH // 不动 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_192.jdk/Contents/Home // 一般情况下只需要修改jdk版本号就好了，和自己安装的版本号一致，安装mvn和jdk后可以通过mvn -v查询到路径
+// 保存后使用source命令 source .bash_profile/.bashrc/.zshrc
+// java环境配置完成
+// 修改maven的setting文件。进入maven安装目录打开conf下面的settings文件
+ 在自己的目录下新建java包存放文件夹，如maven_repostory，我的路径为/Users/mtdp/project/maven_repostory 打开settings.xml文件，修改localRepository路径  /Users/mtdp/project/maven_repostory// 改成自己的路径 meituan-nexus-releasesdeploymentdeployment123&amp;hellip; // 安装python，由于mac本来自带python2，但是如果使用不当可能会引起mac系统崩溃，因此我们使用python3 brew install python3 // 安装python3，如果没有安装brew，使用/bin/bash -c &amp;ldquo;$(curl -fsSL https://raw.</description>
+    </item>
+    
     <item>
       <title>Node.js 常见问题15条</title>
       <link>https://observerzq.github.io/ObzerverZQ.github.io/p/node.js-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%9815%E6%9D%A1/</link>
