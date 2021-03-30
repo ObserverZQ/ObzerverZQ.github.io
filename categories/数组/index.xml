@@ -14,9 +14,8 @@
       
       <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/javascript%E5%AE%9E%E7%8E%B0%E5%B8%B8%E8%A7%81%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</guid>
       <description>冒泡排序 基本思路：从左至右遍历数组，取一个指针指向第一个元素，与下一个元素比较，若该元素更大则前后交换位置，然后指针取下一位，与后一位进行比较，继续这样的循环，这样一轮下来会使得最大值放在数组的末尾，类似吐泡泡一样。之后重新开始循环上述过程，将第二大的元素放在倒数第二位。
-function bubbleSort(array) { let isSorted = true; let len = array.length; for (let i = 0; i &amp;lt; len; i ++) { for (let j = 0; （j &amp;lt; len - i - 1） &amp;amp;&amp;amp; array[j] &amp;gt; array[j + 1]; j++) { [array[j], array[j + 1]] = [array[j + 1], array[j]]; isSorted = false; } if (isSorted) { break; } } return array; } 时间复杂度上，最好情况是O(n)，即数组已经完全排好序，后一个元素永远比前一个元素大，不需要冒泡，只需要遍历一次，平均和最坏情况是O(n2)。
-选择排序 基本思路：从左至右遍历数组，比较一圈后得到最小值的索引，与索引0的元素交换位置；接着从第2位开始循环上述操作，将第二小的元素放在索引为1的位置，以此类推。每次遍历的时间为O(n)，这样的时间复杂度为O(n2)。
-function selectionSort(array) { for (let i = 0, len = array.</description>
+function bubbleSort(array) { let isSorted = true; let len = array.length; for (let i = 0; i &amp;lt; len; i ++) { for (let j = 0; （j &amp;lt; len - i - 1; j++) { if (array[j] &amp;gt; array[j + 1]) { [array[j], array[j + 1]] = [array[j + 1], array[j]]; } isSorted = false; } if (isSorted) { break; } } return array; } 时间复杂度上，最好情况是O(n)，即数组已经完全排好序，后一个元素永远比前一个元素大，不需要冒泡，只需要遍历一次，平均和最坏情况是O(n2)。
+选择排序 基本思路：从左至右遍历数组，比较一圈后得到最小值的索引，与索引0的元素交换位置；接着从第2位开始循环上述操作，将第二小的元素放在索引为1的位置，以此类推。每次遍历的时间为O(n)，这样的时间复杂度为O(n2)。</description>
     </item>
     
   </channel>

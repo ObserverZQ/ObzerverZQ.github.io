@@ -6,7 +6,23 @@
     <description>Recent content in 面试 on Observer的小家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 12 Jan 2021 12:20:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/tags/%E9%9D%A2%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 15 Mar 2021 12:20:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/tags/%E9%9D%A2%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>常见面试题解析文章集锦</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E8%A7%A3%E6%9E%90%E6%96%87%E7%AB%A0%E9%9B%86%E9%94%A6/</link>
+      <pubDate>Mon, 15 Mar 2021 12:20:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E8%A7%A3%E6%9E%90%E6%96%87%E7%AB%A0%E9%9B%86%E9%94%A6/</guid>
+      <description>浏览器从输入URL到显示页面中间发生的事情  一文摸透从输入URL到页面渲染的过程
+一言以概之：浏览器主进程 -&amp;gt; 网络进程 -&amp;gt; 渲染进程 -&amp;gt; GPU进程 -&amp;gt; 浏览器主进程
+ HTTP协议相关、网络攻击 状态码、首部、请求方法、状态管理、身份认证、身份认证、长连接与短连接、代理网关与隧道、HTTP缓存、内容协商机制、断点续传和多线程下载、HTTPS、WebSocket、SPDY、HTTP 2.0、HTTP 3.0、Web安全 详解HTTP协议
+URI包含URL、URN或同时具备locators和name特性的东西。URL给出了访问机制http ftp telnet等。URI唯一标识了身份。
+  请求首部：
+ Accept Accet-Charset Accept-Encoding Accept-Language If-Match === ETag 200 If-Modified-Since &amp;lt; Last Modified 200 === Last Modified 304 If-None-Match !== ETag 200 If-Range === ETag/date 206 !== ETag/date 200 配合Range(Etag/date)使用 Referer: 告诉服务器从URI从哪个页面发起  响应首部：
+ Age 缓存在源服务器存在多久了 ETag 资源实体标识 Location 3xx 重定向用  通用首部：
+ Cache-Control Connection Date     浏览器从输入URL到显示页面中间发生的事情     浏览器从输入URL到显示页面中间发生的事情     浏览器从输入URL到显示页面中间发生的事情     浏览器从输入URL到显示页面中间发生的事情    vue 和 react 设计思路 发展历程 vue1 react15 diff平级 vue2 react16 fiber vue3 &amp;amp; react17</description>
+    </item>
+    
     <item>
       <title>JI技巧</title>
       <link>https://observerzq.github.io/ObzerverZQ.github.io/p/ji%E6%8A%80%E5%B7%A7/</link>
