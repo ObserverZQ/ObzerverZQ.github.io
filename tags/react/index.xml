@@ -6,7 +6,20 @@
     <description>Recent content in React on Observer的小家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 09 Mar 2021 10:14:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/tags/react/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 30 Mar 2021 12:20:26 +0800</lastBuildDate><atom:link href="https://observerzq.github.io/ObzerverZQ.github.io/tags/react/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从0开始实现React</title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0react/</link>
+      <pubDate>Tue, 30 Mar 2021 12:20:26 +0800</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0react/</guid>
+      <description>参考：https://pomb.us/build-your-own-react/ 基于React 16.8实现，因而可以使用hook，不再书写使用过去的class相关的代码。
+实现React的基本思路如下： Step I: The createElement Function 第一步：创建节点 Step II: The render Function 第二步：渲染 Step III: Concurrent Mode 第三步：concurrent模式 Step IV: Fibers 第四步：Fiber“纤维” Step V: Render and Commit Phases 第五步： 渲染和Commit阶段 Step VI: Reconciliation 第六步：调和 Step VII: Function Components 第七步：函数组件 Step VIII: Hooks 第八步：Hooks
+第0步：回顾 下面是最简单的几行React代码：
+const element = &amp;lt;h1 title=&amp;#34;foo&amp;#34;&amp;gt;Hello&amp;lt;/h1&amp;gt; const container = document.getElementById(&amp;#34;root&amp;#34;) ReactDOM.render(element, container) // 把element插入到页面的DOM节点container中 第一行代码替换成vanilla（香草？）JS代码，变化如下：
+// JSX 通过Babel编译成JS // 一般转换过程都很简单：调用createElement把tag内的代码替换掉，传入tag名，属性和子节点作为参数 const element = &amp;lt;h1 title=&amp;#34;foo&amp;#34;&amp;gt;Hello&amp;lt;/h1&amp;gt;  // ========transformation========= const element = React.</description>
+    </item>
+    
     <item>
       <title>flex布局</title>
       <link>https://observerzq.github.io/ObzerverZQ.github.io/p/flex%E5%B8%83%E5%B1%80/</link>
