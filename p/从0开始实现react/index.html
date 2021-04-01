@@ -477,7 +477,7 @@ Step VIII: Hooks                第八步：Hooks</p>
 </li>
 </ul>
 <p>现在让我们用代码进行实现吧！</p>
-<p>首先将原先render函数里的代码抽离出来：</p>
+<p>首先将原先render函数里的创建DOM的代码抽离出来：</p>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">render</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">container</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// 创建DOM
 </span><span class="c1"></span>    <span class="kr">const</span> <span class="nx">dom</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;TEXT_ELEMENT&#39;</span> <span class="o">?</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">);</span>
@@ -562,7 +562,77 @@ Step VIII: Hooks                第八步：Hooks</p>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div><p>以上就是performUnitOfWork方法的实现。</p>
-
+<h1 id="第5步render和commit阶段">第5步：Render和Commit阶段</h1>
+<p>现在我们还面临一个问题。每次我们对一个element进行操作时，都会将一个新的node姐弟那添加到DOM中，但是记住，浏览器可以在我们完成渲染整个树结构之前中断渲染工作去执行更高优先级的任务，在那种情况下，用户会看见一个不完整的UI。我们不希望那种情况发生。所以我们需要将修改DOM的代码片段抽离出来。</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">performUnitOfWork</span><span class="p">(</span><span class="nx">fiber</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span>    <span class="c1">// 修改DOM，需要提出去
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">fiber</span><span class="p">.</span><span class="nx">parent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">fiber</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">dom</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">fiber</span><span class="p">.</span><span class="nx">dom</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>反之，我们需要持续跟踪fiber树的根。我们称它为work in progress root或wipRoot。在render方法中重新命名：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">render</span> <span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">container</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">wipRoot</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">dom</span><span class="o">:</span> <span class="nx">container</span><span class="p">,</span>
+        <span class="nx">props</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">children</span><span class="o">:</span> <span class="p">[</span><span class="nx">element</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nx">nextUnitOfWork</span> <span class="o">=</span> <span class="nx">wipRoot</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">let</span> <span class="nx">nextUnitOfWork</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">wipRoot</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</code></pre></div><p>然后，当我们完成了所有的渲染工作（不存在下一个单元任务时）我们将整个fiber树提交到DOM中（每个fiber都已经带有了它对应要渲染到document上的附带属性的DOM节点）。</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">commitRoot</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// TODO add nodes to dom
+</span><span class="c1"></span><span class="p">}</span>
+<span class="kd">function</span> <span class="nx">render</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">container</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">wipRoot</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">dom</span><span class="o">:</span> <span class="nx">container</span><span class="p">,</span>
+    <span class="nx">props</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">children</span><span class="o">:</span> <span class="p">[</span><span class="nx">element</span><span class="p">],</span>
+    <span class="p">},</span>
+  <span class="p">}</span>
+  <span class="nx">nextUnitOfWork</span> <span class="o">=</span> <span class="nx">wipRoot</span>
+<span class="p">}</span>
+<span class="err">​</span>
+<span class="kd">let</span> <span class="nx">nextUnitOfWork</span> <span class="o">=</span> <span class="kc">null</span>
+<span class="kd">let</span> <span class="nx">wipRoot</span> <span class="o">=</span> <span class="kc">null</span>
+<span class="err">​</span>
+<span class="kd">function</span> <span class="nx">workLoop</span><span class="p">(</span><span class="nx">deadline</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">shouldYield</span> <span class="o">=</span> <span class="kc">false</span>
+  <span class="k">while</span> <span class="p">(</span><span class="nx">nextUnitOfWork</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">shouldYield</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">nextUnitOfWork</span> <span class="o">=</span> <span class="nx">performUnitOfWork</span><span class="p">(</span>
+      <span class="nx">nextUnitOfWork</span>
+    <span class="p">)</span>
+    <span class="nx">shouldYield</span> <span class="o">=</span> <span class="nx">deadline</span><span class="p">.</span><span class="nx">timeRemaining</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span>
+  <span class="p">}</span>
+<span class="err">​</span>  <span class="c1">// 没有下一个单元任务，说明fiber树构建完成，整体提交到DOM中
+</span><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">nextUnitOfWork</span> <span class="o">&amp;&amp;</span> <span class="nx">wipRoot</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">commitRoot</span><span class="p">()</span>
+  <span class="p">}</span>
+  <span class="nx">requestIdleCallback</span><span class="p">(</span><span class="nx">workLoop</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="err">​</span>
+<span class="nx">requestIdleCallback</span><span class="p">(</span><span class="nx">workLoop</span><span class="p">)</span>
+</code></pre></div><p>我们在commitRoot方法中实现提交功能。在commitWork里递归添加所有node到DOM树中。</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">commitRoot</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 这里child就是实际要添加到已有DOM容器节点的根element
+</span><span class="c1"></span>    <span class="nx">commitWork</span><span class="p">(</span><span class="nx">wipRoot</span><span class="p">.</span><span class="nx">child</span><span class="p">);</span>
+    <span class="nx">wipRoot</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">commitWork</span><span class="p">(</span><span class="nx">fiber</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">fiber</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kr">const</span> <span class="nx">fiberParentDom</span> <span class="o">=</span> <span class="nx">fiber</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">dom</span><span class="p">;</span>
+    <span class="nx">fiberParentDom</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">fiber</span><span class="p">.</span><span class="nx">dom</span><span class="p">);</span>
+    <span class="nx">commitWork</span><span class="p">(</span><span class="nx">fiber</span><span class="p">.</span><span class="nx">child</span><span class="p">);</span>
+    <span class="nx">commitWork</span><span class="p">(</span><span class="nx">fiber</span><span class="p">.</span><span class="nx">sibling</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 </section>
 
 
