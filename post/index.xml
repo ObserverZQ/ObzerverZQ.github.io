@@ -87,8 +87,7 @@ cd ~ // 进入根目录 vim .bash_profile // 创建或者打开该文件
       
       <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/javascript%E5%AE%9E%E7%8E%B0%E5%B8%B8%E8%A7%81%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</guid>
       <description>冒泡排序 基本思路：从左至右遍历数组，取一个指针指向第一个元素，与下一个元素比较，若该元素更大则前后交换位置，然后指针取下一位，与后一位进行比较，继续这样的循环，这样一轮下来会使得最大值放在数组的末尾，类似吐泡泡一样。之后重新开始循环上述过程，将第二大的元素放在倒数第二位。
-function bubbleSort(array) { let isSorted = true; let len = array.length; for (let i = 0; i &amp;lt; len; i ++) { for (let j = 0; （j &amp;lt; len - i - 1; j++) { if (array[j] &amp;gt; array[j + 1]) { [array[j], array[j + 1]] = [array[j + 1], array[j]]; } isSorted = false; } if (isSorted) { break; } } return array; } 时间复杂度上，最好情况是O(n)，即数组已经完全排好序，后一个元素永远比前一个元素大，不需要冒泡，只需要遍历一次，平均和最坏情况是O(n2)。
-选择排序 基本思路：从左至右遍历数组，比较一圈后得到最小值的索引，与索引0的元素交换位置；接着从第2位开始循环上述操作，将第二小的元素放在索引为1的位置，以此类推。每次遍历的时间为O(n)，这样的时间复杂度为O(n2)。</description>
+function bubbleSort(array) { let isSorted = true; let len = array.length; for (let i = 0; i &amp;lt; len; i ++) { for (let j = 0; (j &amp;lt; len - i - 1); j++) { if (array[j] &amp;gt; array[j + 1]) { isSorted = false; [array[j], array[j + 1]] = [array[j + 1], array[j]]; } } if (isSorted) { break; } else { isSorted = true; } } return array; } 时间复杂度上，最好情况是O(n)，即数组已经完全排好序，后一个元素永远比前一个元素大，不需要冒泡，只需要遍历一次，平均和最坏情况是O(n2)。</description>
     </item>
     
     <item>
@@ -180,6 +179,64 @@ function c() {} function b() { c(); } function a() { b(); }a(); 代码执行的�
       
       <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/</guid>
       <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/</guid>
+      <description>The Code Reviewer&amp;rsquo;s Guide
+ 代码评审的标准  CR的主要目的就是确保公司的代码库的健壮性随着时间增强。所有的CR工具和过程都是为这一目标而设计的。为了达到这个目标，我们要平衡一系列的取舍。
+首先，开发者必须要能够在他们的任务上实现代码的优化。如果不提交优化的代码，代码库永远也不会改良。另外，评审者在CR时提出的问题过于刁钻，也会抑制开发者make improvements的想法。
+另一方面，确保每个CL的质量不会导致代码库健壮程度下降，是评审者的责任。这其实可能很棘手，因为代码库通常会随时间逐渐质量下降，尤其是在团队处于紧迫的时间限制下，他们会认为必须用最快的办法实现目标。
+除此之外，一个评审者要对他们评审的代码有ownership和责任感。他们要确保代码库保持一致性、可维护性，还有所有在&amp;quot;What to look for in a code review.&amp;ldquo;提到的东西。
+我们得出了如下的期待作为CR标准的准则：
+总体而言，如果一个CL提升了系统整体代码健壮程度，那么评审者应该approve这个CL，即使它不是完美的。
+In general, reviewers should favor approving a CL once it is in a state where it definitely improves the overall code health of the system being worked on, even if the CL isn&amp;rsquo;t perfect.
+这是CR guidelines的最高优先级的原则。这其中当然有限制，例如，如果CL添加了评审者不想要存在于系统中的特性，即使代码设计良好，评审者也仍然可以否决这个CL。关键在于没有“完美”的代码 &amp;ldquo;perfect&amp;rdquo; code——只有更好的代码 better code。评审者不应要求作者润饰每一处细小的代码。相反，评审者应该平衡提升质量的需要和按他们提出的改动建议修改这两者的重要性。一个评审者应该追求的不是完美无暇，而是持续进步continuous improvement.
+一个提升项目代码可维护性、可读性、可理解性的CL不应该仅仅因为它不够完美而被拖延几天或几周。评审者可以自在地指出一些可以改进的东西，但如果那不是非常重要，可以加个前缀Nit，来让开发者知晓那是一个用于润饰的可忽略的点。
+注意：本文不支持必然会让代码健壮程度恶化的CL。唯一可能允许的情况的是面临emergency的时候。
+指导
+CR有一个重要的功能，那就是教给开发者一些关于开发语言、框架、整体软件设计原则等等的新知识。帮助开发者学习新的东西永远是OK的。分享知识本就是让系统代码健壮度随时间提升的一部分。只需要记住一个问题，如果你的评论是纯分享性的，不是帮助改善代码以贴合本文档所描述的标准的关键部分的，记得加个Nit的前缀，或者指明这个问题不是作者必须在这个CL中修复的。
+原则
+Technical facts and data overrule opinions and personal preferences.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/</guid>
+      <description>一周多以前，vue-router团队正式发布了适配Vue 3的vue-router4.0版本。本文将结合4.0版本的release log对该版本的部分新特性进行介绍。
+ 项目结构优化  Vue Router 现在分为三个模块：* History 实现： 处理地址栏，并且特定于 Vue Router 运行的环境（节点，浏览器，移动设备等）
+  Router Matcher：处理类似 /users/:id 的路由解析和优先级处理。
+  Router: 将一切连接在一起，并处理路由特定功能，例如导航守卫。
+  |____types // 全局通用type | |____typeGuards.ts // 对route进行校验 | |____index.ts // type和interface |____router.ts // connects everything together and handle routing specific features like navigation guards |____RouterLink.ts |____errors.ts |____globalExtensions.ts |____injectionSymbols.ts |____utils | |____callbacks.ts | |____README.md | |____index.ts | |____env.ts |____devtools.ts |____location.ts |____matcher // handles the parsing of routes /users/:id and its ranking | |____pathTokenizer.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://observerzq.github.io/ObzerverZQ.github.io/p/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://observerzq.github.io/ObzerverZQ.github.io/p/</guid>
+      <description>小程序渲染原理 所有页面都可以抽象成一棵节点树，每个节点具有自身的属性，包括样式、事件等等。
+一般的H5页面：HTML + CSS + JavaScript
+小程序：WXML + WXSS + JavaScript 技术选型 目前来说，移动端页面渲染的方式主要有三种：
+  Web 渲染。
+  Native 原生渲染。
+  Web 与 Native 两者掺杂，也即我们常说的 Hybrid 渲染。
+  前面也说过，小程序最终的呈现形式，是 WebView + 原生组件，Hybrid 方式。我们结合之前对小程序的期望来看：
+ 开发门槛：Web 门槛低，不过 Native 也有像 RN 这样的框架支持
+体验：Native 体验比 Web 好，Hybrid 在一定程度上比 Web 接近原生体验
+版本更新：Web 支持在线更新，Native 则需要打包到微信一起审核发布
+管控和安全：Web 可跳转或是改变页面内容，存在一些不可控因素和安全风险
+ 由于小程序的宿主是微信，如果用纯客户端原生技术来编写小程序 ，那小程序代码需要与微信代码一起编包，跟随微信发版本，这种方式跟开发节奏必然都是不对的。所以方向应该是需要像 Web 技术那样，有一份随时可更新的资源包放在云端，通过下载到本地，动态执行后即可渲染出界面。
+如果用纯 Web 技术来渲染小程序，在一些有复杂交互的页面上可能会面临一些性能问题。这是因为在 Web 技术中，UI渲染跟 JavaScript 的脚本执行都在一个单线程中执行，这就容易导致一些逻辑任务抢占UI渲染的资源。
+总地看来，小程序选择了 Hybrid 的渲染方式，可以用一种近似 Web 的方式来开发，并且还可以实现在线更新代码。同时，引入原生组件有以下好处：</description>
     </item>
     
   </channel>
